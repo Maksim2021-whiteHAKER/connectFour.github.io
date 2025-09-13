@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4 в ряд</title>
+    <link rel="shortcut ICON" href="assets/logo.png" type="image/png"/>
+    <link rel="stylesheet" href="styles/style.css" type="text/css">
+</head>
+<body>
+    <h1>4 в ряд</h1>
+    <h4> (ВЕРСИЯ 0.0.0.4)</h4>
+    
+    <div id="mainMenu" class="main-menu">
+        <div class="buttons-menu">
+            <button id="normalMode">Обычная</button>
+            <button id="creativeMode">Творческая</button>
+            <button id="customizationBtn">Настройки внешнего вида</button>
+        </div>
+        
+        <div id="creativeSettings" class="creative-settings">
+            <h2>Настройки творческого режима</h2>
+            <div class="form-group">
+                <label for="rows">Количество строк:</label>
+                <input type="number" id="rows" min="4" max="20" value="6">
+            </div>
+            <div class="form-group">
+                <label for="columns">Количество столбцов:</label>
+                <input type="number" id="columns" min="4" max="20" value="7">
+            </div>
+            <div class="form-group">
+                <label for="players">Количество игроков (1-4):</label>
+                <input type="number" id="players" min="1" max="4" value="2">
+            </div>
+            <div class="form-group" id="gameModeGroup" style="display: none;">
+                <label for="gameMode">Режим игры в одного(режим творчества):</label>
+                <select id="gameMode">
+                    <option value="single">Игрок против бота</option>
+                    <option value="test">Тестирование</option>
+                </select>
+            </div>    
+            <button id="startCreativeBtn">Начать игру</button>
+            <button id="backToMainFromSettings" class="back-button">Назад в меню</button>
+        </div>
+        
+        <div id="customizationPanel" class="customization-panel">
+            <h2>Настройки внешнего вида</h2>
+            
+            <h3>Выберите фигурки:</h3>
+            <div class="theme-options">
+                <div class="theme-option selected" data-theme="default">●</div>
+                <div class="theme-option" data-theme="skull">💀</div>
+                <div class="theme-option" data-theme="hearts">❤</div>
+                <div class="theme-option" data-theme="turtles">🐢</div>
+                <div class="theme-option" data-theme="stars">★</div>
+                <div class="theme-option" data-theme="squares">■</div>
+            </div>
+            
+            <h3>Выберите цвета игроков:</h3>
+            <div class="color-options">
+                <div class="color-option selected" style="background-color: #e74c3c;" data-color="#e74c3c" data-player="1"></div>
+                <div class="color-option selected" style="background-color: #f1c40f;" data-color="#f1c40f" data-player="2"></div>
+                <div class="color-option" style="background-color: #3498db;" data-color="#3498db" data-player="3"></div>
+                <div class="color-option" style="background-color: #2ecc71;" data-color="#2ecc71" data-player="4"></div>
+                <div class="color-option" style="background-color: #9b59b6;" data-color="#9b59b6" data-player="1"></div>
+                <div class="color-option" style="background-color: #e67e22;" data-color="#e67e22" data-player="2"></div>
+                <div class="color-option" style="background-color: #34495e;" data-color="#34495e" data-player="3"></div>
+                <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c" data-player="4"></div>
+            </div>
+            
+            <button id="saveCustomizationBtn">Сохранить</button>
+            <button id="backToMainFromCustomization" class="back-button">Назад в меню</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="score-board" id="scoreBoard">
+            <!-- Счет будет добавлен через JavaScript -->
+        </div>
+        
+        <div class="game-info" id="gameInfo">
+            <div class="player player1 current-turn" id="player1">
+                <div class="player-color"></div>
+                <span>Игрок 1</span>
+            </div>
+            <div class="player player2" id="player2">
+                <div class="player-color"></div>
+                <span>Игрок 2</span>
+            </div>
+        </div>
+
+        <div class="status" id="status">Подготовка к игре...</div>
+
+        <div class="board-container">
+            <div class="column-numbers" id="columnNumbers">
+                <!-- Номера колонок будут добавлены через JavaScript -->
+            </div>
+            
+            <div class="board-with-labels">
+                <div class="row-letters" id="rowLetters">
+                    <!-- Буквы строк будут добавлены через JavaScript -->
+                </div>
+                
+                <div class="board" id="board">            
+                    <!-- Игровое поле будет сгенерировано через JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="restartBtn">Новая игра</button>
+            <button id="settingsBtn">Изменить настройки</button>
+            <button id="addPlayerBtn">Добавить игрока</button>
+            <button id="removePlayerBtn">Удалить игрока</button>
+            <button id="backToMainBtn" class="back-button">Назад в меню</button>
+        </div>
+
+        <div class="connection-status">
+            <div class="connection-dot disconnected" id="connectionDot"></div>
+            <span id="connectionStatus">Локальная игра</span>
+        </div>
+
+        <div class="hosting-info">
+            <h3>Бесплатные варианты хостинга</h3>
+            <div class="hosting-options">
+                <div class="hosting-option">Heroku</div>
+                <div class="hosting-option">Render</div>
+                <div class="hosting-option">Cyclic.sh</div>
+                <div class="hosting-option">GitHub Pages</div>                
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <h2 id="winMessage">Победа!</h2>
+            <p id="winDescription">Игрок 1 победил!</p>
+            <button id="playAgainBtn">Играть снова</button>
+            <button id="backToMainFromWin" class="back-button">Назад в меню</button>
+        </div>
+    </div>
+
+    <div class="modal" id="drawModal">
+        <div class="modal-content">
+            <h2>Ничья!</h2>
+            <p>Все ячейки заполнены, но никто не победил.</p>
+            <button id="playAgainAfterDrawBtn">Играть снова</button>
+            <button id="backToMainAfterDrawBtn" class="back-button">Назад в меню</button>
+        </div>
+    </div>       
+
+    <!-- Модальные окна для творческого режима -->
+    <div class="modal creative-modal" id="player1Modal">
+        <div class="modal-content">
+            <h2>Настройки Игрока 1</h2>
+
+            <div class="form-group">
+                <label for="player1Nickname">Ник Игрока 1:</label>
+                <input type="text" id="player1Nickname" class="nickname-input" placeholder="Введите ник" maxlength="20">
+            </div>
+            
+            <h3>Выберите фигурку:</h3>
+            <div class="theme-options player-theme-options">
+                <div class="theme-option" data-theme="default">●</div>
+                <div class="theme-option" data-theme="skull">💀</div>
+                <div class="theme-option" data-theme="hearts">❤</div>
+                <div class="theme-option" data-theme="turtles">🐢</div>
+                <div class="theme-option" data-theme="stars">★</div>
+                <div class="theme-option" data-theme="squares">■</div>
+            </div>
+            
+            <h3>Выберите цвет:</h3>
+            <div class="color-options player-color-options">
+                <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
+                <div class="color-option" style="background-color: #f1c40f;" data-color="#f1c40f"></div>
+                <div class="color-option" style="background-color: #3498db;" data-color="#3498db"></div>
+                <div class="color-option" style="background-color: #2ecc71;" data-color="#2ecc71"></div>
+                <div class="color-option" style="background-color: #9b59b6;" data-color="#9b59b6"></div>
+                <div class="color-option" style="background-color: #e67e22;" data-color="#e67e22"></div>
+                <div class="color-option" style="background-color: #34495e;" data-color="#34495e"></div>
+                <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
+            </div>
+            
+            <button class="save-player-settings" data-player="1">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal creative-modal" id="player2Modal">
+        <div class="modal-content">
+            <h2>Настройки Игрока 2</h2>
+
+            <div class="form-group">
+                <label for="player2Nickname">Ник Игрока 2:</label>
+                <input type="text" id="player2Nickname" class="nickname-input" placeholder="Введите ник" maxlength="20">
+            </div>
+            
+            <h3>Выберите фигурку:</h3>
+            <div class="theme-options player-theme-options">
+                <div class="theme-option" data-theme="default">●</div>
+                <div class="theme-option" data-theme="skull">💀</div>
+                <div class="theme-option" data-theme="hearts">❤</div>
+                <div class="theme-option" data-theme="turtles">🐢</div>
+                <div class="theme-option" data-theme="stars">★</div>
+                <div class="theme-option" data-theme="squares">■</div>
+            </div>
+            
+            <h3>Выберите цвет:</h3>
+            <div class="color-options player-color-options">
+                <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
+                <div class="color-option" style="background-color: #f1c40f;" data-color="#f1c40f"></div>
+                <div class="color-option" style="background-color: #3498db;" data-color="#3498db"></div>
+                <div class="color-option" style="background-color: #2ecc71;" data-color="#2ecc71"></div>
+                <div class="color-option" style="background-color: #9b59b6;" data-color="#9b59b6"></div>
+                <div class="color-option" style="background-color: #e67e22;" data-color="#e67e22"></div>
+                <div class="color-option" style="background-color: #34495e;" data-color="#34495e"></div>
+                <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
+            </div>
+            
+            <button class="save-player-settings" data-player="2">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal creative-modal" id="player3Modal">
+        <div class="modal-content">
+            <h2>Настройки Игрока 3</h2>
+
+            <div class="form-group">
+                <label for="player3Nickname">Ник Игрока 3:</label>
+                <input type="text" id="player3Nickname" class="nickname-input" placeholder="Введите ник" maxlength="20">
+            </div>
+            
+            <h3>Выберите фигурку:</h3>
+            <div class="theme-options player-theme-options">
+                <div class="theme-option" data-theme="default">●</div>
+                <div class="theme-option" data-theme="skull">💀</div>
+                <div class="theme-option" data-theme="hearts">❤</div>
+                <div class="theme-option" data-theme="turtles">🐢</div>
+                <div class="theme-option" data-theme="stars">★</div>
+                <div class="theme-option" data-theme="squares">■</div>
+            </div>
+            
+            <h3>Выберите цвет:</h3>
+            <div class="color-options player-color-options">
+                <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
+                <div class="color-option" style="background-color: #f1c40f;" data-color="#f1c40f"></div>
+                <div class="color-option" style="background-color: #3498db;" data-color="#3498db"></div>
+                <div class="color-option" style="background-color: #2ecc71;" data-color="#2ecc71"></div>
+                <div class="color-option" style="background-color: #9b59b6;" data-color="#9b59b6"></div>
+                <div class="color-option" style="background-color: #e67e22;" data-color="#e67e22"></div>
+                <div class="color-option" style="background-color: #34495e;" data-color="#34495e"></div>
+                <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
+            </div>
+            
+            <button class="save-player-settings" data-player="3">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal creative-modal" id="player4Modal">
+        <div class="modal-content">
+            <h2>Настройки Игрока 4</h2>
+
+            <div class="form-group">
+                <label for="player4Nickname">Ник Игрока 4:</label>
+                <input type="text" id="player4Nickname" class="nickname-input" placeholder="Введите ник" maxlength="20">
+            </div>
+            
+            <h3>Выберите фигурку:</h3>
+            <div class="theme-options player-theme-options">
+                <div class="theme-option" data-theme="default">●</div>
+                <div class="theme-option" data-theme="skull">💀</div>
+                <div class="theme-option" data-theme="hearts">❤</div>
+                <div class="theme-option" data-theme="turtles">🐢</div>
+                <div class="theme-option" data-theme="stars">★</div>
+                <div class="theme-option" data-theme="squares">■</div>
+            </div>
+            
+            <h3>Выберите цвет:</h3>
+            <div class="color-options player-color-options">
+                <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
+                <div class="color-option" style="background-color: #f1c40f;" data-color="#f1c40f"></div>
+                <div class="color-option" style="background-color: #3498db;" data-color="#3498db"></div>
+                <div class="color-option" style="background-color: #2ecc71;" data-color="#2ecc71"></div>
+                <div class="color-option" style="background-color: #9b59b6;" data-color="#9b59b6"></div>
+                <div class="color-option" style="background-color: #e67e22;" data-color="#e67e22"></div>
+                <div class="color-option" style="background-color: #34495e;" data-color="#34495e"></div>
+                <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
+            </div>
+            
+            <button class="save-player-settings" data-player="4">Сохранить</button>
+        </div>
+    </div>
+    <!-- Конец модальных окон для творческого режима -->
+
+    <script src="scripts/logic.js" type="module"></script>
+</body>
+</html>
