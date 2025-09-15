@@ -919,7 +919,7 @@ export const flagImages = {
     'zh-CN': '/assets/flags/svg/Flag-of-China.svg',
     'fr': '/assets/flags/svg/Flag-of-France.svg',
     'de': '/assets/flags/svg/Flag-of-Germany.svg',
-    'ja': '/assets/flags/svg/Flag-of-Japan.svg',
+    'ja': '/assets/flags/svg/Flag-of-japan.svg',
     'pt-BR': '/assets/flags/svg/Flag-of-Brazil.svg',
     'ar': '/assets/flags/svg/Flag-of-Saudi_Arabia.svg',
     'tr': '/assets/flags/svg/Flag-of-Turkiye.svg',
