@@ -913,17 +913,17 @@ export const sliderLanguages = [
 // В реальном проекте лучше использовать файлы в папке assets
 
 export const flagImages = {
-    'ru': '../assets/flags/svg/myhomeland.svg',
-    'en': '../assets/flags/svg/Flag-of-USAXPENP.svg',
-    'es': '../assets/flags/svg/Flag-of-Spain.svg',
-    'zh-CN': '../assets/flags/svg/Flag-of-China.svg',
-    'fr': '../assets/flags/svg/Flag-of-France.svg',
-    'de': '../assets/flags/svg/Flag-of-Germany.svg',
-    'ja': '../assets/flags/svg/Flag-of-Japan.svg',
-    'pt-BR': '../assets/flags/svg/Flag-of-Brazil.svg',
-    'ar': '../assets/flags/svg/Flag-of-Saudi_arabia.svg',
-    'tr': '../assets/flags/svg/Flag-of-Turkiye.svg',
-    'udm': '../assets/flags/svg/mylittlehomeland.svg',
+    'ru': '/assets/flags/svg/myhomeland.svg',
+    'en': '/assets/flags/svg/Flag-of-USAXPENP.svg',
+    'es': '/assets/flags/svg/Flag-of-Spain.svg',
+    'zh-CN': '/assets/flags/svg/Flag-of-China.svg',
+    'fr': '/assets/flags/svg/Flag-of-France.svg',
+    'de': '/assets/flags/svg/Flag-of-Germany.svg',
+    'ja': '/assets/flags/svg/Flag-of-Japan.svg',
+    'pt-BR': '/assets/flags/svg/Flag-of-Brazil.svg',
+    'ar': '/assets/flags/svg/Flag-of-Saudi_arabia.svg',
+    'tr': '/assets/flags/svg/Flag-of-Turkiye.svg',
+    'udm': '/assets/flags/svg/mylittlehomeland.svg',
 };
 
 export function logicSlider(){
