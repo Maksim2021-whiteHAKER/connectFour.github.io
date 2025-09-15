@@ -921,7 +921,7 @@ export const flagImages = {
     'de': '/assets/flags/svg/Flag-of-Germany.svg',
     'ja': '/assets/flags/svg/Flag-of-Japan.svg',
     'pt-BR': '/assets/flags/svg/Flag-of-Brazil.svg',
-    'ar': '/assets/flags/svg/Flag-of-Saudi_arabia.svg',
+    'ar': '/assets/flags/svg/Flag-of-Saudi_Arabia.svg',
     'tr': '/assets/flags/svg/Flag-of-Turkiye.svg',
     'udm': '/assets/flags/svg/mylittlehomeland.svg',
 };
