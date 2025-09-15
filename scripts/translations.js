@@ -17,7 +17,7 @@ const translations = {
         "pt-BR": "4 seguidas",
         "ar": "4 على التوالي",
         "tr": "4 bir sırada",
-        "udm": "4 в ряд"
+        "udm": "Радэн-радэн 4"
     },
     "versionSpan": {
         "ru": "ВЕРСИЯ {{version}}",
@@ -44,7 +44,7 @@ const translations = {
         "pt-BR": "Normal",
         "ar": "عادي",
         "tr": "Normal",
-        "udm": "Тупатым"
+        "udm": "Огшоры"
     },
     "creativeMode": {
         "ru": "Творческая",
@@ -57,7 +57,7 @@ const translations = {
         "pt-BR": "Criativo",
         "ar": "إبداعي",
         "tr": "Yaratıcı",
-        "udm": "Творческой"
+        "udm": "Творческая"
     },
     "customizationTitle": {
         "ru": "Настройки внешнего вида",
@@ -70,7 +70,7 @@ const translations = {
         "pt-BR": "Configurações de aparência",
         "ar": "إعدادات المظهر",
         "tr": "Görünüm Ayarları",
-        "udm": ""
+        "udm": "Настройка вылтусыз"
     },
 
     "creativeSettingsTitle": {
@@ -97,7 +97,7 @@ const translations = {
         "pt-BR": "Número de linhas:",
         "ar": "عدد الصفوف:",
         "tr": "Satır sayısı:",
-        "udm": "Рядъёс количествой:"
+        "udm": "Рядъёс количество:"
     },
     "columnsLabel": {
         "ru": "Количество столбцов:",
@@ -110,7 +110,7 @@ const translations = {
         "pt-BR": "Número de colunas:",
         "ar": "عدد الأعمدة:",
         "tr": "Sütun sayısı:",
-        "udm": "Столбцъёс количествой:"
+        "udm": "Столбцъёс количество:"
     },
     "playersLabel": {
         "ru": "Количество игроков (1-4):",
@@ -123,7 +123,7 @@ const translations = {
         "pt-BR": "Número de jogadores (1-4):",
         "ar": "عدد اللاعبين (1-4):",
         "tr": "Oyuncu sayısı (1-4):",
-        "udm": "Игрокъёс количествой (1-4):"
+        "udm": "Игрокъёс количество (1-4):"
     },
     "gameModeLabel": {
         "ru": "Режим игры в одного(режим творчества):",
