@@ -8,8 +8,17 @@
     <link rel="stylesheet" href="styles/style.css" type="text/css">
 </head>
 <body>
-    <h1>4 в ряд</h1>
-    <h4> (ВЕРСИЯ 0.0.0.4)</h4>
+    <h1 id="gameTitle">4 в ряд</h1>
+    <span id="ver">0.0.0.5</span>
+    <h4 id="versionSpan" class="version"></h4>
+
+    <div id="languageSliderContainer">
+        <div id="languageSlider";>
+            <button id="sliderPrev">&#8249;</button>
+                <div id="sliderFlags"></div>
+            <button id="sliderNext">&#8250;</button>
+        </div>
+    </div>
     
     <div id="mainMenu" class="main-menu">
         <div class="buttons-menu">
@@ -19,24 +28,24 @@
         </div>
         
         <div id="creativeSettings" class="creative-settings">
-            <h2>Настройки творческого режима</h2>
+            <h2 id="creativeSettingsTitle">Настройки творческого режима</h2>
             <div class="form-group">
-                <label for="rows">Количество строк:</label>
+                <label id="rowsLabel" for="rows">Количество строк:</label>
                 <input type="number" id="rows" min="4" max="20" value="6">
             </div>
             <div class="form-group">
-                <label for="columns">Количество столбцов:</label>
+                <label id="columnsLabel" for="columns">Количество столбцов:</label>
                 <input type="number" id="columns" min="4" max="20" value="7">
             </div>
             <div class="form-group">
-                <label for="players">Количество игроков (1-4):</label>
+                <label id="playersLabel" for="players">Количество игроков (1-4):</label>
                 <input type="number" id="players" min="1" max="4" value="2">
             </div>
             <div class="form-group" id="gameModeGroup" style="display: none;">
-                <label for="gameMode">Режим игры в одного(режим творчества):</label>
+                <label id="gameModeLabel" for="gameMode">Режим игры в одного(режим творчества):</label>
                 <select id="gameMode">
-                    <option value="single">Игрок против бота</option>
-                    <option value="test">Тестирование</option>
+                    <option id="gameModeSingle" value="single">Игрок против бота</option>
+                    <option id="gameModeTest" value="test">Тестирование</option>
                 </select>
             </div>    
             <button id="startCreativeBtn">Начать игру</button>
@@ -44,9 +53,9 @@
         </div>
         
         <div id="customizationPanel" class="customization-panel">
-            <h2>Настройки внешнего вида</h2>
+            <h2  id="customizationTitle">Настройки внешнего вида</h2>
             
-            <h3>Выберите фигурки:</h3>
+            <h3 id="themeLabel">Выберите фигурки:</h3>
             <div class="theme-options">
                 <div class="theme-option selected" data-theme="default">●</div>
                 <div class="theme-option" data-theme="skull">💀</div>
@@ -56,7 +65,7 @@
                 <div class="theme-option" data-theme="squares">■</div>
             </div>
             
-            <h3>Выберите цвета игроков:</h3>
+            <h3 id="colorLabel">Выберите цвета игроков:</h3>
             <div class="color-options">
                 <div class="color-option selected" style="background-color: #e74c3c;" data-color="#e74c3c" data-player="1"></div>
                 <div class="color-option selected" style="background-color: #f1c40f;" data-color="#f1c40f" data-player="2"></div>
@@ -142,8 +151,8 @@
 
     <div class="modal" id="drawModal">
         <div class="modal-content">
-            <h2>Ничья!</h2>
-            <p>Все ячейки заполнены, но никто не победил.</p>
+            <h2 id="drawModalTitle">Ничья!</h2>
+            <p id="drawModalDescription">Все ячейки заполнены, но никто не победил.</p>
             <button id="playAgainAfterDrawBtn">Играть снова</button>
             <button id="backToMainAfterDrawBtn" class="back-button">Назад в меню</button>
         </div>
@@ -152,14 +161,14 @@
     <!-- Модальные окна для творческого режима -->
     <div class="modal creative-modal" id="player1Modal">
         <div class="modal-content">
-            <h2>Настройки Игрока 1</h2>
+            <h2 id="player1ModalTitle">Настройки Игрока 1</h2>
 
             <div class="form-group">
-                <label for="player1Nickname">Ник Игрока 1:</label>
+                <label id="player1NicknameLabel" for="player1Nickname">Ник Игрока 1:</label>
                 <input type="text" id="player1Nickname" class="nickname-input" placeholder="Введите ник" maxlength="20">
             </div>
             
-            <h3>Выберите фигурку:</h3>
+            <h3 id="player1ThemeLabel">Выберите фигурку:</h3>
             <div class="theme-options player-theme-options">
                 <div class="theme-option" data-theme="default">●</div>
                 <div class="theme-option" data-theme="skull">💀</div>
@@ -169,7 +178,7 @@
                 <div class="theme-option" data-theme="squares">■</div>
             </div>
             
-            <h3>Выберите цвет:</h3>
+            <h3 id="player1ColorLabel">Выберите цвет:</h3>
             <div class="color-options player-color-options">
                 <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
                 <div class="color-option" style="background-color: #f1c40f;" data-color="#f1c40f"></div>
@@ -181,20 +190,20 @@
                 <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
             </div>
             
-            <button class="save-player-settings" data-player="1">Сохранить</button>
+            <button id="player1SaveBtn" class="save-player-settings" data-player="1">Сохранить</button>
         </div>
     </div>
 
     <div class="modal creative-modal" id="player2Modal">
         <div class="modal-content">
-            <h2>Настройки Игрока 2</h2>
+            <h2 id="player2ModalTitle">Настройки Игрока 2</h2>
 
             <div class="form-group">
-                <label for="player2Nickname">Ник Игрока 2:</label>
+                <label id="player1NicknameLabel" for="player2Nickname">Ник Игрока 2:</label>
                 <input type="text" id="player2Nickname" class="nickname-input" placeholder="Введите ник" maxlength="20">
             </div>
             
-            <h3>Выберите фигурку:</h3>
+            <h3 id="player2ThemeLabel">Выберите фигурку:</h3>
             <div class="theme-options player-theme-options">
                 <div class="theme-option" data-theme="default">●</div>
                 <div class="theme-option" data-theme="skull">💀</div>
@@ -204,7 +213,7 @@
                 <div class="theme-option" data-theme="squares">■</div>
             </div>
             
-            <h3>Выберите цвет:</h3>
+            <h3 id="player2ColorLabel">Выберите цвет:</h3>
             <div class="color-options player-color-options">
                 <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
                 <div class="color-option" style="background-color: #f1c40f;" data-color="#f1c40f"></div>
@@ -216,20 +225,20 @@
                 <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
             </div>
             
-            <button class="save-player-settings" data-player="2">Сохранить</button>
+            <button id="player2SaveBtn" class="save-player-settings" data-player="2">Сохранить</button>
         </div>
     </div>
 
     <div class="modal creative-modal" id="player3Modal">
         <div class="modal-content">
-            <h2>Настройки Игрока 3</h2>
+            <h2 id="player3ModalTitle">Настройки Игрока 3</h2>
 
             <div class="form-group">
-                <label for="player3Nickname">Ник Игрока 3:</label>
+                <label id="player3NicknameLabel" for="player3Nickname">Ник Игрока 3:</label>
                 <input type="text" id="player3Nickname" class="nickname-input" placeholder="Введите ник" maxlength="20">
             </div>
             
-            <h3>Выберите фигурку:</h3>
+            <h3 id="player3ThemeLabel">Выберите фигурку:</h3>
             <div class="theme-options player-theme-options">
                 <div class="theme-option" data-theme="default">●</div>
                 <div class="theme-option" data-theme="skull">💀</div>
@@ -239,7 +248,7 @@
                 <div class="theme-option" data-theme="squares">■</div>
             </div>
             
-            <h3>Выберите цвет:</h3>
+            <h3 id="player3ColorLabel">Выберите цвет:</h3>
             <div class="color-options player-color-options">
                 <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
                 <div class="color-option" style="background-color: #f1c40f;" data-color="#f1c40f"></div>
@@ -251,20 +260,20 @@
                 <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
             </div>
             
-            <button class="save-player-settings" data-player="3">Сохранить</button>
+            <button id="player3SaveBtn" class="save-player-settings" data-player="3">Сохранить</button>
         </div>
     </div>
 
     <div class="modal creative-modal" id="player4Modal">
         <div class="modal-content">
-            <h2>Настройки Игрока 4</h2>
+            <h2 id="player4ModalTitle">Настройки Игрока 4</h2>
 
             <div class="form-group">
-                <label for="player4Nickname">Ник Игрока 4:</label>
+                <label id="player4NicknameLabel" for="player4Nickname">Ник Игрока 4:</label>
                 <input type="text" id="player4Nickname" class="nickname-input" placeholder="Введите ник" maxlength="20">
             </div>
             
-            <h3>Выберите фигурку:</h3>
+            <h3 id="player4ThemeLabel">Выберите фигурку:</h3>
             <div class="theme-options player-theme-options">
                 <div class="theme-option" data-theme="default">●</div>
                 <div class="theme-option" data-theme="skull">💀</div>
@@ -274,7 +283,7 @@
                 <div class="theme-option" data-theme="squares">■</div>
             </div>
             
-            <h3>Выберите цвет:</h3>
+            <h3 id="player4ColorLabel">Выберите цвет:</h3>
             <div class="color-options player-color-options">
                 <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
                 <div class="color-option" style="background-color: #f1c40f;" data-color="#f1c40f"></div>
@@ -286,11 +295,11 @@
                 <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
             </div>
             
-            <button class="save-player-settings" data-player="4">Сохранить</button>
+            <button id="player4SaveBtn" class="save-player-settings" data-player="4">Сохранить</button>
         </div>
     </div>
     <!-- Конец модальных окон для творческого режима -->
-
+    <script src="scripts/translations.js" type="module"></script>
     <script src="scripts/logic.js" type="module"></script>
 </body>
 </html>

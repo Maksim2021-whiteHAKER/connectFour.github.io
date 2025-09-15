@@ -1,5 +1,32 @@
+import { logicSlider, sliderLanguages, flagImages, updateVersionDisplay } from "./translations.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     // Элементы DOM
+     // Проверка наличия необходимых элементов и функций
+     if (typeof window.changeLanguage !== 'function') {
+        console.warn('Функция changeLanguage не определена. Слайдер языков не будет работать.');
+        return;
+    }
+    if (typeof sliderLanguages === 'undefined' || typeof flagImages === 'undefined') {
+        console.warn('Данные sliderLanguages или flagImages не определены. Слайдер языков не будет работать.');
+        return;
+    }
+    if (!document.getElementById('languageSliderContainer')) {
+         console.warn('Контейнер слайдера #languageSliderContainer не найден в DOM. Слайдер языков не будет отображаться.');
+         return;
+    }
+
+    console.log("Инициализация слайдера языков...");
+    // Вызов функции инициализации слайдера
+    logicSlider();
+    console.log("Слайдер языков инициализирован.");
+
+    console.log('Применение перевода')
+    applyTranslations()
+    updateVersionDisplay()
+
+    console.log('Перевод применён')
+
     const mainMenu = document.getElementById('mainMenu');
     const creativeSettings = document.getElementById('creativeSettings');
     const customizationPanel = document.getElementById('customizationPanel');
@@ -547,6 +574,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Обновляем статус
             this.updateStatus();
 
+            status.textContent = t('status')
+
             const isCurrentPlayerBot = Object.values(bots).some(bot =>
                 bot.isActive && bot.id === this.currentPlayer
             );
@@ -1018,20 +1047,24 @@ document.addEventListener('DOMContentLoaded', () => {
             );
             
             if (isCurrentPlayerBot) {
-                status.textContent = `Ходит ${Object.values(bots).find(b => b.id === this.currentPlayer)?.name || 'Бот'}...`;
+                const botName = Object.values(bots).find(b => b.id === this.currentPlayer)?.name || 'Бот'
+
+                status.textContent = t('statusBotTurn', {botName : botName});
             } else {
-                status.textContent = `Ходит ${playerNicknames[this.currentPlayer] || `Игрок ${this.currentPlayer}`}`;
+                const playerName = playerNicknames[this.currentPlayer] || t('playerName', {number: this.currentPlayer})
+                status.textContent = t('statusTurn', {playerName : playerName});
             }
         }
 
         showWinModal() {
-            winMessage.textContent = 'Победа!';
+            winMessage.textContent = t('winModalTitle');
             const winnerBot = Object.values(bots).find(bot => bot.id === this.winner);
             
             if (winnerBot) {
-                winDescription.textContent = `${winnerBot.name} выиграл!`;
+                winDescription.textContent = t('winDescriptionBot', {winnerBot: winnerBot.name}) //`${winnerBot.name} выиграл!`;
             } else {
-                winDescription.textContent = `${playerNicknames[this.winner] || `Игрок ${this.winner}`} победил!`;
+                const winnerName = playerNicknames[this.winner] || t('playerName', {number: this.winner})
+                winDescription.textContent = t('winDescriptionPlayer', {winnerName: winnerName}) //`${playerNicknames[this.winner] || `Игрок ${this.winner}`} победил!`;
             }
 
             winModal.style.display = 'flex';
@@ -1142,3 +1175,102 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+function updateGameLanguage() {
+    console.log("Обновление языка интерфейса игры...");
+    
+    // 1. Если игра запущена, обновляем динамические элементы
+    if (window.game) {
+        // a. Обновляем статус игры
+        window.game.updateStatus(); 
+        console.log("  - Статус обновлен");
+
+        // b. Обновляем имена игроков и ботов в панелях game-info и score-board
+        window.game.createPlayersUI();
+        window.game.createScoreBoard();
+        console.log("  - Информация об игроках и счет обновлены");
+
+        // c. Обновляем текст в модальном окне победы, если оно открыто
+        const winModalElement = document.getElementById('winModal');
+        if (winModalElement && winModalElement.style.display !== 'none') {
+            console.log("  - Обновление модального окна победы");
+            // Получаем элементы внутри модального окна
+            const winMsgEl = document.getElementById('winMessage'); // Заголовок "Победа!"
+            // winDescription обновляется динамически в showWinModal, но мы можем обновить заголовок
+            const playAgainBtnEl = document.getElementById('playAgainBtn');
+            const backToMainBtnEl = document.getElementById('backToMainFromWin');
+
+            // Обновляем статический текст
+            if (winMsgEl) {
+                winMsgEl.textContent = t('modals.win.title'); // "Победа!" / "Victory!"
+            }
+            if (playAgainBtnEl) {
+                playAgainBtnEl.textContent = t('PlayAgainBtn'); // "Играть снова" / "Play Again"
+            }
+            if (backToMainBtnEl) {
+                backToMainBtnEl.textContent = t('BackToMainFromWin'); // "Назад в меню" / "Back to Menu"
+            }
+            
+            // Текст описания победителя (например, "Игрок 1 победил!") обновляется
+            // динамически внутри game.showWinModal() или при вызове этого метода.
+            // Если вы хотите обновить его немедленно, не закрывая модалку,
+            // вам нужно знать, кто победил (window.game.winner) и тип победителя (игрок/бот).
+            // Это сложнее, так как требует повторного формирования сообщения.
+            // Проще всего пересоздать сообщение, вызвав showWinModal снова, 
+            // но это может быть не идеально, если модалка анимирована.
+            // Альтернатива: хранить состояние победителя и обновлять описание отдельно.
+            // Пока оставим динамическое обновление на момент вызова showWinModal.
+            // Но если игра уже закончена, можно обновить описание:
+            if (window.game.winner) {
+                 const winDescEl = document.getElementById('winDescription');
+                 if (winDescEl) {
+                     // Повторяем логику из showWinModal для формирования текста
+                     const winnerBot = Object.values(window.bots || {}).find(bot => bot.id === window.game.winner);
+                     if (winnerBot) {
+                         winDescEl.textContent = t('modals.win.description_bot', { winnerName: winnerBot.name });
+                     } else {
+                         // Предполагаем, что playerNicknames доступен глобально или через window.game
+                         const winnerName = (window.playerNicknames && window.playerNicknames[window.game.winner]) || 
+                                            t('game.player', { number: window.game.winner });
+                         winDescEl.textContent = t('modals.win.description_player', { winnerName: winnerName });
+                     }
+                 }
+            }
+        }
+
+        // d. Обновляем текст в модальном окне ничьей, если оно открыто
+        const drawModalElement = document.getElementById('drawModal');
+        if (drawModalElement && drawModalElement.style.display !== 'none') {
+             console.log("  - Обновление модального окна ничьей");
+             // В текущем HTML у <h2> и <p> нет id, добавим их в HTML или найдем по тегу/позиции
+             // Предположим, вы добавили id="drawModalTitle" и id="drawModalDescription"
+             const drawTitleEl = document.getElementById('drawModalTitle'); // <h2>
+             const drawDescEl = document.getElementById('drawModalDescription'); // <p>
+             const playAgainDrawBtnEl = document.getElementById('playAgainAfterDrawBtn');
+             const backToMainDrawBtnEl = document.getElementById('backToMainAfterDrawBtn');
+
+             if (drawTitleEl) {
+                 drawTitleEl.textContent = t('modals.draw.title'); // "Ничья!" / "Draw!"
+             }
+             if (drawDescEl) {
+                 drawDescEl.textContent = t('modals.draw.description'); // "Все ячейки..."
+             }
+             if (playAgainDrawBtnEl) {
+                 playAgainDrawBtnEl.textContent = t('playAgainAfterDrawBtn'); // "Играть снова"
+             }
+             if (backToMainDrawBtnEl) {
+                 backToMainDrawBtnEl.textContent = t('backToMainAfterDrawBtn'); // "Назад в меню"
+             }
+        }
+    } else {
+        console.log("  - Игра не запущена, обновление только статических элементов");
+    }
+
+    // 2. Обновляем статические текстовые элементы на странице (кнопки, заголовки и т.д.)
+    // Предполагается, что функция applyTranslations() уже существует и делает это.
+    // Если она не глобальная или не была вызвана, можно вызвать её здесь.
+    // applyTranslations(); // Убедитесь, что эта функция доступна
+    console.log("  - Статические элементы обновлены (предполагается вызов applyTranslations)");
+}
+// Делаем функцию доступной глобально, если она еще не такая
+window.updateGameLanguage = updateGameLanguage;
