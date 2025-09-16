@@ -59,7 +59,7 @@ const translations = {
         "tr": "Yaratıcı",
         "udm": "Творческая"
     },
-    "customizationTitle": {
+    "customizationBtn": {
         "ru": "Настройки внешнего вида",
         "en": "Appearance Settings",
         "es": "Configuración de apariencia",
@@ -788,8 +788,22 @@ const translations = {
         "ar": "{{winnerBot}} يفوز!",
         "tr": "{{winnerBot}} kazandı!",
         "udm": "{{winnerBot}} выиграл!"
-    }
+    },
     // ... можно добавить больше ключей по мере необходимости
+    // имя игроков default
+    "defaultNamePlayer": {
+        "ru": "Игрок",
+        "en": "Player",
+        "es": "Jugador",
+        "zh-CN": "玩家",
+        "fr": "Joueur",
+        "de": "Spieler",
+        "ja": "プレーヤー",
+        "pt-BR": "Jogador",
+        "ar": "لاعب",
+        "tr": "Oyuncu",
+        "udm": "Шудӥсь",
+    }
 };
 
 // 2. Функция для определения языка пользователя
