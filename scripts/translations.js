@@ -940,33 +940,10 @@ export const flagImages = {
     'udm': '/assets/flags/svg/mylittlehomeland.svg',
 };
 
-// export const flagImages = {
-//     'ru': '/assets/myhomeland.svg',
-//     'en': '/assets/flags/svg/Flag-of-USAXPENP.svg',
-//     'es': '/assets/flags/svg/Flag-of-Spain.svg',
-//     'zh-CN': '/assets/flags/svg/Flag-of-China.svg',
-//     'fr': '/assets/flags/svg/Flag-of-France.svg',
-//     'de': '/assets/flags/svg/Flag-of-Germany.svg',
-//     'ja': '/assets/flags/svg/Flag-of-Japan.svg',
-//     'pt-BR': '/assets/flags/svg/Flag-of-Brazil.svg',
-//     'ar': '/assets/flags/svg/Flag-of-Saudi_arabia.svg',
-//     'tr': '/assets/flags/svg/Flag-of-Turkiye.svg',
-//     'udm': '/assets/flags/svg/mylittlehomeland.svg',
-// };
-
-// export const flagImages = {
-//     'ru': '/static/myhomeland.svg',
-//     'en': '/static/Flag-of-USAXPENP.svg',
-//     'es': '/static/Flag-of-Spain.svg',
-//     'zh-CN': '/static/Flag-of-China.svg',
-//     'fr': '/static/Flag-of-France.svg',
-//     'de': '/static/Flag-of-Germany.svg',
-//     'ja': '/static/Flag-of-Japan.svg',
-//     'pt-BR': '/static/Flag-of-Brazil.svg',
-//     'ar': '/static/Flag-of-Saudi_arabia.svg',
-//     'tr': '/static/Flag-of-Turkiye.svg',
-//     'udm': '/static/mylittlehomeland.svg',
-// };
+const flagEmoji = {
+    'ru': "🇷🇺"
+    
+}
 
 export function logicSlider(){
     setTimeout(() => {
@@ -1006,7 +983,7 @@ export function logicSlider(){
 
                 const flagImg = document.createElement('img');
                 flagImg.className = 'lang-flag-img';
-                flagImg.src = flagImages[langData.code] || flagImages.ru; // Заглушка
+                flagImg.src = flagImages[langData.code] || flagEmoji.ru; // Заглушка
                 
                 flagImg.alt = langData.code.toUpperCase();
 
