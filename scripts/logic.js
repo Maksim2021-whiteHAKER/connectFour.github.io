@@ -304,7 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (nicknameInput && nicknameInput.value.trim() !== ''){
                 playerNicknames[playerNumber] = nicknameInput.value.trim();
             } else if (nicknameInput){
-                playerNicknames[playerNumber] = `Игрок ${playerNumber}`;
+                // playerNicknames[playerNumber] = `Игрок ${playerNumber}`;
+                playerNicknames[playerNumber] = `${t('defaultNamePlayer')} ${playerNumber}`;
             }
             
             // Сохраняем настройки игрока

@@ -232,6 +232,31 @@ button:hover {
     border-radius: 100px;
 }
 
+.lang-flag-emoji {
+    width: 50px;               /* Фиксированная ширина для флагов */
+    height: 50px;              /* Фиксированная высота */
+    font-size: 28px;           /* Размер эмодзи = размер контейнера */
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* ✅ ВЫРАВНИВАЕТ ЭМОДЗИ ВНУТРИ САМОГО SPAN */
+    border-radius: 50%;        /* ✅ Круглые флаги — красиво! */
+    border: 0.5px solid #ccc;  /* Опционально: для отладки */
+    font-family: 
+        "Noto Color Emoji",    /* Android, Linux, ChromeOS */
+        "Segoe UI Emoji",      /* Windows 10+ */
+        "Apple Color Emoji",   /* macOS, iOS */
+        "EmojiOne",            /* Резервный шрифт (если установлен) */
+        "Twemoji Mozilla",     /* Дополнительный fallback для Firefox/Linux */
+        "Android Emoji",       /* Для старых Android */
+        "EmojiSymbols",        /* Редкий, но иногда используется */
+        sans-serif;             /* Обязательный последний fallback */
+
+    /* Чтобы эмодзи не растягивались */
+    overflow: hidden;
+    text-align: center;
+}
+
 .container {
     display: none;
     flex-direction: column;

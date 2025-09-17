@@ -941,8 +941,17 @@ export const flagImages = {
 };
 
 const flagEmoji = {
-    'ru': "🇷🇺"
-    
+    'ru': "♾",
+    'en': "⚠",
+    'es': "🌴",
+    'zh-CN': "🟥🛠",
+    'fr': "🥖",
+    'de': "🛠",
+    'ja': "🍣",
+    'pt-BR': "☀",
+    'ar': "⛱",
+    'tr': "☪",
+    'udm': '🌲🌸'   
 }
 
 export function logicSlider(){
@@ -983,9 +992,24 @@ export function logicSlider(){
 
                 const flagImg = document.createElement('img');
                 flagImg.className = 'lang-flag-img';
-                flagImg.src = flagImages[langData.code] || flagEmoji.ru; // Заглушка
-                
+                flagImg.src = flagImages[langData.code] || ''; // Заглушка
+                               
                 flagImg.alt = langData.code.toUpperCase();
+                
+                flagImg.onerror = function(){
+                    console.log(`[${langData.code}] Эмодзи fallback triggered`);
+                    this.style.display = 'none';
+
+                    const flagContainer = this.parentElement;
+                    const emojiSpan = document.createElement('span');
+                    emojiSpan.className = 'lang-flag-emoji';
+                    if (flagEmoji[langData.code]){
+                        emojiSpan.textContent = flagEmoji[langData.code]
+                    } else {
+                        emojiSpan.textContent = langData.code.toUpperCase()
+                    }
+                    flagContainer.appendChild(emojiSpan);
+                }
 
                 flagBtn.appendChild(flagImg);
                 sliderFlagsContainer.appendChild(flagBtn);
