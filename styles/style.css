@@ -575,7 +575,8 @@ button:hover {
 }
 
 .color-option.selected {
-    border: 2px solid #2c3e50;
+    border: 5px double white;
+    outline: 2.5px solid purple;
 }
 
 .modal {

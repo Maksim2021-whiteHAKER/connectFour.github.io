@@ -455,6 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < originalPlayerColors.length; i++) {
             document.documentElement.style.setProperty(`--player${i + 1}`, playerColors[i]);
         }
+        playerScores = [0, 0, 0, 0];
         playerThemesInCreative = {};
         bots = {};
     }
