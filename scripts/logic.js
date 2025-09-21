@@ -1,9 +1,13 @@
+// scripts/logic.js 
 import { logicSlider, sliderLanguages, flagImages, updateVersionDisplay } from "./translations.js";
+import { GAME_CONFIG } from './config.js'
+
+const availableThemes = GAME_CONFIG.themes;
+const availableColors = GAME_CONFIG.colors;
 
 document.addEventListener('DOMContentLoaded', () => {
     // Элементы DOM
-     // Проверка наличия необходимых элементов и функций
-     if (typeof window.changeLanguage !== 'function') {
+    if (typeof window.changeLanguage !== 'function') {
         console.warn('Функция changeLanguage не определена. Слайдер языков не будет работать.');
         return;
     }
@@ -17,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     console.log("Инициализация слайдера языков...");
-    // Вызов функции инициализации слайдера
     logicSlider();
     console.log("Слайдер языков инициализирован.");
 
@@ -26,6 +29,60 @@ document.addEventListener('DOMContentLoaded', () => {
     updateVersionDisplay()
 
     console.log('Перевод применён')
+    let originalPlayerColors = ['#ff0000', '#f1c40f', '#1ca9c9', '#00fa91'];
+    let playerColors = [...originalPlayerColors];
+
+    // Добавляем параметр playerNumber для определения, какая тема должна быть выбрана
+    function populateThemeOptions(containerSelector, playerNumber = null) {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+        container.innerHTML = ''; // Очищаем существующие опции
+
+        // Определяем, какая тема должна быть выбрана для этого игрока
+        let selectedThemeKey = 'default'; // По умолчанию
+        if (playerNumber !== null && playerThemesInCreative[playerNumber]) {
+            selectedThemeKey = playerThemesInCreative[playerNumber];
+        }
+
+        availableThemes.forEach(theme => {
+            const themeDiv = document.createElement('div');
+            themeDiv.className = 'theme-option';
+            // Добавляем класс 'selected', если это текущая тема игрока или тема по умолчанию (если у игрока тема не задана)
+            if (theme.key === selectedThemeKey) {
+                themeDiv.classList.add('selected');
+            }
+            themeDiv.dataset.theme = theme.key;
+            themeDiv.textContent = theme.symbol;
+            // Добавить title с названием темы, если нужно
+            // themeDiv.title = t(`theme_${theme.key}`) || theme.key; // Предполагается функция перевода t
+            container.appendChild(themeDiv);
+        });
+    }
+
+    // Добавляем параметр playerNumber для определения, какой цвет должен быть выбран
+    function populateColorOptions(containerSelector, playerNumber) {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+        container.innerHTML = ''; // Очищаем существующие опции
+
+        // Определяем, какой цвет должен быть выбран для этого игрока
+        const selectedColorCode = playerColors[playerNumber - 1]; // playerColors[0] для игрока 1 и т.д.
+
+        availableColors.forEach(color => {
+            const colorDiv = document.createElement('div');
+            colorDiv.className = 'color-option';
+            // Добавляем класс 'selected', если это текущий цвет игрока
+            if (selectedColorCode && color.code === selectedColorCode) {
+                colorDiv.classList.add('selected');
+            }
+            colorDiv.style.backgroundColor = color.code;
+            colorDiv.dataset.color = color.code;
+            // Для модального окна настройки игрока data-player не нужен
+            container.appendChild(colorDiv);
+        });
+    }
+
+    populateThemeOptions('#customizationPanel .theme-options');
 
     const mainMenu = document.getElementById('mainMenu');
     const creativeSettings = document.getElementById('creativeSettings');
@@ -58,6 +115,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToMainFromWin = document.getElementById('backToMainFromWin');
     const backToMainAfterDrawBtn = document.getElementById('backToMainAfterDrawBtn');
 
+    // Единое модальное окно для настроек игроков
+    const playerSettingsModal = document.getElementById('playerSettingsModal');
+    const playerModalTitle = document.getElementById('playerModalTitle');
+    const playerNicknameInput = document.getElementById('playerNickname');
+    const playerSaveBtn = document.getElementById('playerSaveBtn');
+
+    // Проверяем, что элементы существуют
+    if (!playerSettingsModal || !playerModalTitle || !playerNicknameInput || !playerSaveBtn) {
+        console.log(`1:${!!playerSettingsModal}, 2: ${!!playerModalTitle}, 3: ${!!playerNicknameInput}, 4: ${!!playerSaveBtn}`)
+        console.error('Не найдены элементы модального окна настроек игрока')
+    };
+
+    let currentPlayerBeingConfigured = 0; // Текущий игрок, настройки которого редактируются
+
     function toggleButtonsMenu(hide, callback) {
         const buttonsMenu = document.querySelector('.buttons-menu');
         if (!buttonsMenu) {
@@ -67,43 +138,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         if (hide) {
-            // Начинаем анимацию исчезновения
             buttonsMenu.classList.add('fade-transition');
-            // Ждем завершения анимации, затем вызываем callback
             setTimeout(() => {
                 if (callback && typeof callback === 'function') callback();
-            }, 400); // 400ms = длительность transition в CSS
+            }, 400);
         } else {
-            // Убираем класс анимации, чтобы элемент стал видимым
             buttonsMenu.classList.remove('fade-transition');
-            // Ждем один кадр (или немного больше), чтобы CSS применился, затем callback
             requestAnimationFrame(() => {
-                 // setTimeout с 0 или requestAnimationFrame гарантирует, 
-                 // что callback выполнится после обновления стилей
                  setTimeout(() => {
                      if (callback && typeof callback === 'function') callback();
                  }, 0);
             });
-            // Или просто вызвать callback сразу, если анимация появления не нужна:
-            // if (callback && typeof callback === 'function') callback();
         }
     }
-
-    // Модальные окна для игроков в творческом режиме
-    const playerModals = {
-        1: document.getElementById('player1Modal'),
-        2: document.getElementById('player2Modal'),
-        3: document.getElementById('player3Modal'),
-        4: document.getElementById('player4Modal')
-    };
 
     // Переменные игры
     let game;
     let playerScores = [0, 0, 0, 0];
-    let currentTheme = 'default'; // Для обычного режима и как запасной вариант
-    // --- ИЗМЕНЕНО: Храним оригинальные цвета и рабочую копию ---
-    let originalPlayerColors = ['#e74c3c', '#f1c40f', '#3498db', '#2ecc71'];
-    let playerColors = [...originalPlayerColors]; // Рабочая копия для обмена
+    let currentTheme = 'default';
     let gameMode = 'single';
     let lastLoser = null;
     let maxPlayers = 4;
@@ -116,31 +168,21 @@ document.addEventListener('DOMContentLoaded', () => {
         4: "Игрок 4"
     }
 
-    let bots = {
-        // Пример структуры:
-        /** 5: { 5 - уникальный ID для бота
-         * id: 5,
-         * name: "Бот".
-         * symbol: "🤖"
-         * color: "#808080" - серый
-         * isActive: false,
-         * difficulty: "easy"
-        }
-        */
-    }
-    
-    // --- НОВОЕ: Для разных фигурок в творческом режиме ---
+    let bots = {};
+
     const themeSymbols = {
         'default': '●',
         'skull': '💀',
         'hearts': '❤',
         'turtles': '🐢',
         'stars': '★',
-        'squares': '■'
+        'squares': '■',
+        'sun': '☀',
+        'moon': '🌙'
     };
     const creativeModeThemes = ['default', 'skull', 'hearts', 'turtles', 'stars', 'squares'];
-    let isCreativeMode = false; // Флаг для отслеживания режима
-    let playerThemesInCreative = {}; // Хранит тему для каждого игрока в творческом режиме
+    let isCreativeMode = false;
+    let playerThemesInCreative = {}; 
 
     // Обработчики событий
     normalModeBtn.addEventListener('click', () => {
@@ -192,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gameMode = gameModeSelect.value;
         }
         
-        isCreativeMode = true; // Устанавливаем флаг творческого режима
+        isCreativeMode = true;
         
         // Открываем модальные окна для настройки игроков
         openPlayerModals(players);
@@ -204,12 +246,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedTheme) {
             currentTheme = selectedTheme.dataset.theme;
         }
-        // --- ИЗМЕНЕНО: Сохраняем оригинальные цвета ---
+        // Сохраняем оригинальные цвета
         document.querySelectorAll('.color-option.selected').forEach(option => {
             const playerIndex = parseInt(option.dataset.player) - 1;
             originalPlayerColors[playerIndex] = option.dataset.color;
-            playerColors[playerIndex] = option.dataset.color; // Синхронизируем рабочую копию
-            // Обновление CSS переменных
+            playerColors[playerIndex] = option.dataset.color;
             document.documentElement.style.setProperty(`--player${playerIndex + 1}`, playerColors[playerIndex]);
         });
         alert('Настройки сохранены!');
@@ -245,10 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- НОВОЕ: При удалении до 1 игрока, можно снова добавить бота ---
-        // Это опционально, зависит от желаемой логики
         if (game.players === 2 && (gameMode === 'single' || gameMode === 'test')) {
-            const botId = game.players + 1; // ID для бота
+            const botId = game.players + 1;
             bots[botId] = {
                 id: botId,
                 name: "Бот",
@@ -283,74 +322,73 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.color-option').forEach(option => {
         option.addEventListener('click', () => {
             const playerNum = option.dataset.player;
-            // Убираем выделение у всех цветов для этого игрока
-            if (playerNum) { // Только для общих настроек
+            if (playerNum) {
                 document.querySelectorAll(`.color-option[data-player="${playerNum}"]`).forEach(opt => {
                     opt.classList.remove('selected');
                 });
             }
-            // Выделяем выбранный цвет
             option.classList.add('selected');
         });
     });
 
-    // Обработчики для модальных окон игроков
-    document.querySelectorAll('.save-player-settings').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const playerNumber = parseInt(e.target.dataset.player);
-            const modal = playerModals[playerNumber];
+    // Обработчики для модального окна игрока
+    playerSaveBtn.addEventListener('click', (e) => {
+        const playerNumber = currentPlayerBeingConfigured;
+        
+        // Сохраняем никнейм
+        if (playerNicknameInput.value.trim() !== ''){
+            playerNicknames[playerNumber] = playerNicknameInput.value.trim();
+        } else {
+            playerNicknames[playerNumber] = `${t('defaultNamePlayer')} ${playerNumber}`;
+        }
 
-            const nicknameInput = modal.querySelector(`#player${playerNumber}Nickname`)
-            if (nicknameInput && nicknameInput.value.trim() !== ''){
-                playerNicknames[playerNumber] = nicknameInput.value.trim();
-            } else if (nicknameInput){
-                // playerNicknames[playerNumber] = `Игрок ${playerNumber}`;
-                playerNicknames[playerNumber] = `${t('defaultNamePlayer')} ${playerNumber}`;
-            }
-            
-            // Сохраняем настройки игрока
-            const selectedTheme = modal.querySelector('.player-theme-options .theme-option.selected');
-            const selectedColor = modal.querySelector('.player-color-options .color-option.selected');
-            
-            if (selectedTheme) {
-                playerThemesInCreative[playerNumber] = selectedTheme.dataset.theme;
-            }
-            
-            if (selectedColor) {
-                playerColors[playerNumber - 1] = selectedColor.dataset.color;
-                // Обновляем CSS переменную
-                document.documentElement.style.setProperty(`--player${playerNumber}`, selectedColor.dataset.color);
-            }
-            
-            // Закрываем модальное окно
-            modal.style.display = 'none';
-            
-            // Проверяем, все ли модальные окна закрыты
-            checkAllModalsClosed();
-        });
+        playerNicknameInput.value = ''; // сброс имени 
+        
+        // Сохраняем настройки игрока
+        const selectedTheme = playerSettingsModal.querySelector('.player-theme-options .theme-option.selected');
+        const selectedColor = playerSettingsModal.querySelector('.player-color-options .color-option.selected');
+        
+        if (selectedTheme) {
+            playerThemesInCreative[playerNumber] = selectedTheme.dataset.theme;
+        }
+        
+        if (selectedColor) {
+            playerColors[playerNumber - 1] = selectedColor.dataset.color;
+            document.documentElement.style.setProperty(`--player${playerNumber}`, selectedColor.dataset.color);
+        }
+        
+        // Закрываем модальное окно
+        playerSettingsModal.style.display = 'none';
+        
+        // Проверяем, все ли игроки настроены
+        const players = parseInt(document.getElementById('players').value);
+        if (currentPlayerBeingConfigured < players) {
+            // Переходим к следующему игроку
+            currentPlayerBeingConfigured++;
+            showPlayerModal(currentPlayerBeingConfigured);
+        } else {
+            // Все игроки настроены, начинаем игру
+            const rows = parseInt(document.getElementById('rows').value);
+            const columns = parseInt(document.getElementById('columns').value);
+            startGame(rows, columns, players);
+        }
     });
 
-    // Обработчики выбора темы и цвета в модальных окнах игроков
-    document.querySelectorAll('.player-theme-options .theme-option').forEach(option => {
+    // Обработчики выбора темы и цвета в модальном окне игрока
+    playerSettingsModal.querySelectorAll('.player-theme-options .theme-option').forEach(option => {
         option.addEventListener('click', () => {
-            // Убираем выделение у всех тем в этом модальном окне
-            const modalContent = option.closest('.modal-content');
-            modalContent.querySelectorAll('.player-theme-options .theme-option').forEach(opt => {
+            playerSettingsModal.querySelectorAll('.player-theme-options .theme-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
-            // Выделяем выбранную тему
             option.classList.add('selected');
         });
     });
 
-    document.querySelectorAll('.player-color-options .color-option').forEach(option => {
+    playerSettingsModal.querySelectorAll('.player-color-options .color-option').forEach(option => {
         option.addEventListener('click', () => {
-            // Убираем выделение у всех цветов в этом модальном окне
-            const modalContent = option.closest('.modal-content');
-            modalContent.querySelectorAll('.player-color-options .color-option').forEach(opt => {
+            playerSettingsModal.querySelectorAll('.player-color-options .color-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
-            // Выделяем выбранный цвет
             option.classList.add('selected');
         });
     });
@@ -409,18 +447,14 @@ document.addEventListener('DOMContentLoaded', () => {
         customizationPanel.style.display = 'none';
         winModal.style.display = 'none';
         drawModal.style.display = 'none';
-        // Закрываем все модальные окна игроков
-        Object.values(playerModals).forEach(modal => {
-            modal.style.display = 'none';
-        });
+        // Закрываем модальное окно настроек игрока
+        playerSettingsModal.style.display = 'none';
         mainMenu.style.display = 'flex';
         toggleButtonsMenu(false);
-        // --- НОВОЕ: Сбрасываем цвета при выходе в меню ---
         playerColors = [...originalPlayerColors];
         for (let i = 0; i < originalPlayerColors.length; i++) {
             document.documentElement.style.setProperty(`--player${i + 1}`, playerColors[i]);
         }
-        // Сбрасываем настройки творческого режима
         playerThemesInCreative = {};
         bots = {};
     }
@@ -430,81 +464,107 @@ document.addEventListener('DOMContentLoaded', () => {
         mainMenu.style.display = 'none';
         creativeSettings.style.display = 'none';
         customizationPanel.style.display = 'none';
-        // Закрываем все модальные окна игроков
-        Object.values(playerModals).forEach(modal => {
-            modal.style.display = 'none';
-        });
+        playerSettingsModal.style.display = 'none';
         container.style.display = 'flex';
-        // --- НОВОЕ: Сбрасываем цвета перед началом новой игры ---
         playerColors = [...originalPlayerColors];
 
         bots = {};
 
-        // Если выбран режим с ботом и 1 игрок, добавляем бота
         if ((gameMode === 'single' || gameMode === 'test') && players === 1) {
-            // Создаем объект бота
-            // ID бота будет players + 1 (т.е. 2 в данном случае)
             const botId = players + 1; 
             bots[botId] = {
                 id: botId,
                 name: "Бот",
-                symbol: symbolBot, // Можно выбрать другую иконку
-                color: "#808080", // Серый цвет по умолчанию
+                symbol: symbolBot,
+                color: "#808080",
                 isActive: true,
-                // difficulty: gameMode === 'single' ? "medium" : "easy" // Пример сложности
             };
-            console.log("StartGAME: Бот добавлен:", bots[botId]); // Для отладки
+            console.log("StartGAME: Бот добавлен:", bots[botId]);
         } else {
-            console.log("StartGame Бот не добавлен:"); // Для отладки
+            console.log("StartGame Бот не добавлен:");
         }
 
         game = new ConnectFourGame(rows, columns, players);
     }
 
-    // --- НОВОЕ: Функция для открытия модальных окон игроков ---
+    // Функция для открытия модальных окон игроков
     function openPlayerModals(playersCount) {
-        // Сначала закрываем все модальные окна
-        Object.values(playerModals).forEach(modal => {
-            modal.style.display = 'none';
+        currentPlayerBeingConfigured = 1;
+        showPlayerModal(currentPlayerBeingConfigured);
+    }
+
+    // Функция для отображения модального окна для конкретного игрока
+    function showPlayerModal(playerNumber) {
+        // ... (проверки и установка заголовка)
+
+        // Очищаем и заполняем опции тем и цветов для текущего игрока
+        populateThemeOptions('#playerSettingsModal .player-theme-options');
+        populateColorOptions('#playerSettingsModal .player-color-options', playerNumber); // Передаем playerNumber
+
+        // --- НОВОЕ: Назначаем обработчики событий клика для ВНОВЬ СОЗДАННЫХ элементов ---
+        const modalContent = playerSettingsModal; // Или document.getElementById('playerSettingsModal'); если playerSettingsModal не определен в этой области видимости
+
+        // Обработчики выбора темы внутри модального окна
+        modalContent.querySelectorAll('.player-theme-options .theme-option').forEach(option => {
+            option.addEventListener('click', () => {
+                // Убираем выделение у всех тем в этом модальном окне
+                modalContent.querySelectorAll('.player-theme-options .theme-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                // Выделяем выбранную тему
+                option.classList.add('selected');
+            });
         });
-        
-        // Открываем модальные окна для каждого игрока
-        for (let i = 1; i <= playersCount; i++) {
-            if (playerModals[i]) {
-                playerModals[i].style.display = 'flex';
+
+        // Обработчики выбора цвета внутри модального окна
+        modalContent.querySelectorAll('.player-color-options .color-option').forEach(option => {
+            option.addEventListener('click', () => {
+                // Убираем выделение у всех цветов в этом модальном окне
+                modalContent.querySelectorAll('.player-color-options .color-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                // Выделяем выбранный цвет
+                option.classList.add('selected');
+            });
+        });
+
+        // ПОЯСНЕНИЕ: Теперь мы выделяем элементы, у которых уже есть обработчики
+        if (playerThemesInCreative[playerNumber]) {
+            const currentThemeOption = playerSettingsModal.querySelector(`.player-theme-options .theme-option[data-theme="${playerThemesInCreative[playerNumber]}"]`);
+            if (currentThemeOption) {
+                currentThemeOption.classList.add('selected');
+            }
+        } else {
+            // Выделяем тему по умолчанию
+            const defaultThemeOption = playerSettingsModal.querySelector('.player-theme-options .theme-option[data-theme="default"]');
+            if (defaultThemeOption) {
+                defaultThemeOption.classList.add('selected');
             }
         }
-    }
 
-    // --- НОВОЕ: Функция для проверки, все ли модальные окна закрыты ---
-    function checkAllModalsClosed() {
-        const allClosed = Object.values(playerModals).every(modal => {
-            return modal.style.display === 'none';
-        });
-        
-        if (allClosed) {
-            // Все модальные окна закрыты, можно начинать игру
-            const rows = parseInt(document.getElementById('rows').value);
-            const columns = parseInt(document.getElementById('columns').value);
-            const players = parseInt(document.getElementById('players').value);
-            startGame(rows, columns, players);
+        // Выделяем текущий цвет игрока, если он есть (код остался прежним)
+        const currentColor = playerColors[playerNumber - 1];
+        if (currentColor) {
+            const currentColorOption = playerSettingsModal.querySelector(`.player-color-options .color-option[data-color="${currentColor}"]`);
+            if (currentColorOption) {
+                currentColorOption.classList.add('selected');
+            }
         }
+
+        // Показываем модальное окно
+        playerSettingsModal.style.display = 'flex';
     }
 
-    // --- НОВОЕ: Функция для генерации меток строк (снизу вверх, АА, АБ...) ---
+    // Функция для генерации меток строк
     function generateRowLabels(numRows) {
         const letters = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
         const labels = [];
         for (let i = 0; i < numRows; i++) {
-            // Индекс считается снизу: последняя строка (нижняя) - 0, предпоследняя - 1 и т.д.
             const indexFromBottom = numRows - 1 - i;
 
             if (indexFromBottom < letters.length) {
-                // Для первых 33 строк используем одну букву
                 labels.push(letters[indexFromBottom]);
             } else {
-                // Для строк свыше 33 используем комбинации (упрощенная логика)
-                // Это пример: AA, AB, AC... BA, BB... (по аналогии с Excel)
                 let label = '';
                 let tempIndex = indexFromBottom;
                 while (tempIndex >= 0) {
@@ -512,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     tempIndex = Math.floor(tempIndex / letters.length) - 1;
                     if (tempIndex < 0) break;
                 }
-                labels.push(label || 'А'); // На случай переполнения
+                labels.push(label || 'А');
             }
         }
         return labels;
@@ -524,7 +584,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.rows = rows;
             this.columns = columns;
             this.players = players;
-            // this.currentPlayer = 1;
             this.winner = 0;
             this.board = [];
             this.winningCells = [];
@@ -534,27 +593,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         initGame() {
-            // Создаем пустую доску
             this.board = Array(this.rows).fill(null).map(() => Array(this.columns).fill(0));
 
             const activeBotsIds = Object.values(bots).filter(bot => bot.isActive).map(bot => bot.id);
             const allParticipantIds = [...Array(this.players).keys()].map(i => i + 1).concat(activeBotsIds);
 
-            let isFirstPlayerDetermined = false; // Флаг для отладки
+            let isFirstPlayerDetermined = false;
 
-            // Проверяем, является ли lastLoser одним из текущих участников
             if (lastLoser !== null && allParticipantIds.includes(lastLoser)) {
-                this.currentPlayer = lastLoser; // Проигравший (бот или человек) ходит первым
-                console.log(`Первым ходит проигравший: ${lastLoser}`); // Для отладки
+                this.currentPlayer = lastLoser;
+                console.log(`Первым ходит проигравший: ${lastLoser}`);
                 isFirstPlayerDetermined = true;
             }
 
-            // Если первый игрок еще не определен, начинает Игрок 1
             if (!isFirstPlayerDetermined) {
                  this.currentPlayer = 1;
                  if (lastLoser === null) {
                      console.log("Первым ходит Игрок 1 по умолчанию (lastLoser=null)");
-                 } else { // lastLoser !== null, но не входит в allParticipantIds
+                 } else {
                      console.log(`Первым ходит Игрок 1 по умолчанию (lastLoser=${lastLoser} не участвует в этой игре)`);
                  }
             }
@@ -563,16 +619,11 @@ document.addEventListener('DOMContentLoaded', () => {
             this.winningCells = [];
             this.movesCount = 0;
 
-            // Создаем интерфейс игроков
             this.createPlayersUI();
-            // Создаём счет игроков
             this.createScoreBoard();
-            // Создаём номера колонок и буквы строк
             this.createColumnNumbers();
-            this.createRowLetters(); // Использует новую функцию
-            // Создаем игровое поле
+            this.createRowLetters();
             this.createBoard();
-            // Обновляем статус
             this.updateStatus();
 
             status.textContent = t('status')
@@ -580,10 +631,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const isCurrentPlayerBot = Object.values(bots).some(bot =>
                 bot.isActive && bot.id === this.currentPlayer
             );
-            console.log(`initGame: currentPlayer=${this.currentPlayer}, isBot=${isCurrentPlayerBot}`); // Отладка
+            console.log(`initGame: currentPlayer=${this.currentPlayer}, isBot=${isCurrentPlayerBot}`);
             if (isCurrentPlayerBot && this.winner === 0) {
-                 console.log("initGame: Инициация первого хода бота"); // Отладка
-                 // Используем setTimeout 0, чтобы дать время отрисоваться UI
                  setTimeout(() => {
                       this.makeBotMove(); 
                  }, 0); 
@@ -599,29 +648,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (i === this.currentPlayer) {
                     playerElement.classList.add('current-turn');
                 }
-                // --- ИЗМЕНЕНО: Отображение фигурки игрока ---
-                let playerSymbol = themeSymbols[currentTheme]; // По умолчанию
+                let playerSymbol = themeSymbols[currentTheme];
                 if (isCreativeMode && playerThemesInCreative[i]) {
-                    // В творческом режиме используем уникальную тему игрока
                     playerSymbol = themeSymbols[playerThemesInCreative[i]] || themeSymbols['default'];
                 }
                 playerElement.innerHTML = `
                     <div class="player-color"></div>
-                    <span>${playerNicknames[i] || `Игрок ${i}`} ${playerSymbol}</span> <!-- Используем ник -->
+                    <span>${playerNicknames[i] || `Игрок ${i}`} ${playerSymbol}</span>
                 `;
                 gameInfo.appendChild(playerElement);
             }
 
-             // --- НОВОЕ: Отображаем ботов, если они есть и активны ---
              Object.values(bots).forEach(bot => {
                 if (bot.isActive) {
                     const botElement = document.createElement('div');
-                    botElement.className = `player bot`; // Добавляем класс bot для стилизации
+                    botElement.className = `player bot`;
                     botElement.id = `bot${bot.id}`;
-                    // Выделяем бота, если он текущий игрок (это нужно протестировать)
-                    // if (bot.id === this.currentPlayer) {
-                    //     botElement.classList.add('current-turn');
-                    // }
                     
                     botElement.innerHTML = `
                         <div class="player-color" style="background-color: ${bot.color};"></div>
@@ -637,29 +679,21 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 1; i <= this.players; i++) {
                 const scoreItem = document.createElement('div');
                 scoreItem.className = 'score-item';
-                // --- ИЗМЕНЕНО: Отображение фигурки игрока в счете и используем рабочую копию цветов ---
-                let playerSymbol = themeSymbols[currentTheme]; // По умолчанию
+                let playerSymbol = themeSymbols[currentTheme];
                 if (isCreativeMode && playerThemesInCreative[i]) {
-                    // В творческом режиме используем уникальную тему игрока
                     playerSymbol = themeSymbols[playerThemesInCreative[i]] || themeSymbols['default'];
                 }
                 scoreItem.innerHTML = `
                     <div class="player-color" style="background-color: ${playerColors[i-1]}"></div>
-                    <span>${playerSymbol} ${playerNicknames[i] || `Игрок ${i}`}: ${playerScores[i-1]}</span>`; // Добавляем символ
+                    <span>${playerSymbol} ${playerNicknames[i] || `Игрок ${i}`}: ${playerScores[i-1]}</span>`;
                 scoreBoard.appendChild(scoreItem);
             }
 
-            // --- НОВОЕ: Отображаем счет ботов, если они есть и активны ---
             Object.values(bots).forEach(bot => {
                 if (bot.isActive) {
                     const scoreItem = document.createElement('div');
-                    scoreItem.className = 'score-item bot-score'; // Добавляем класс для стилизации
-
-                    // Предположим, что счет бота хранится отдельно или в playerScores
-                    // Для простоты, пока используем playerScores[bot.id - 1], но это может быть не совсем корректно
-                    // Лучше завести отдельный массив для счета ботов или использовать общий массив playerScores
-                    // с учетом ID ботов.
-                    const botScoreIndex = bot.id - 1; // Простое сопоставление
+                    scoreItem.className = 'score-item bot-score';
+                    const botScoreIndex = bot.id - 1;
                     scoreItem.innerHTML = `
                         <div class="player-color" style="background-color: ${bot.color};"></div>
                         <span>${bot.symbol} ${bot.name}: ${playerScores[botScoreIndex] || 0}</span>`;
@@ -670,9 +704,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createColumnNumbers() {
             columnNumbers.innerHTML = '';
-            // Добавляем пустой элемент для выравнивания с буквами строк
             const empty = document.createElement('div');
-            empty.style.width = '25px'; // Ширина .row-letter
+            empty.style.width = '25px';
             empty.style.marginRight = '5px';
             columnNumbers.appendChild(empty);
             for (let col = 1; col <= this.columns; col++) {
@@ -685,7 +718,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createRowLetters() {
             rowLetters.innerHTML = '';
-            // --- ИЗМЕНЕНО: Используем новую функцию для генерации меток ---
             const labels = generateRowLabels(this.rows);
             for (let i = 0; i < this.rows; i++) {
                 const rowLetter = document.createElement('div');
@@ -697,7 +729,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createBoard() {
             board.innerHTML = '';
-            // Настраиваем grid в соответствии с размерами
             board.style.gridTemplateColumns = `repeat(${this.columns}, 1fr)`;
             for (let row = 0; row < this.rows; row++) {
                 for (let col = 0; col < this.columns; col++) {
@@ -712,25 +743,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         makeMove(column) {
-              // Проверяем, является ли текущий игрок активным ботом
-              const isCurrentPlayerBot = Object.values(bots).some(bot => 
+            const isCurrentPlayerBot = Object.values(bots).some(bot => 
                 bot.isActive && bot.id === this.currentPlayer
             );
             
             if (this.winner !== 0 || isCurrentPlayerBot) {
-                // Если игра окончена или ходит бот, человек не может сделать ход
                 return;
             }
 
-            // Находим первую свободную ячейку в колонке
             for (let row = this.rows - 1; row >= 0; row--) {
                 if (this.board[row][column] === 0) {
-                    // Делаем ход
                     this.board[row][column] = this.currentPlayer;
                     this.movesCount++;
-                    // Обновляем UI
                     this.updateBoard();
-                    // Проверяем победу
                     if (this.checkWin(row, column)) {
                         this.winner = this.currentPlayer;
                         if (this.currentPlayer >= 1 && this.currentPlayer <= maxPlayers){
@@ -740,73 +765,58 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         this.showWinModal();
                     } else if (this.movesCount === this.maxMoves) {
-                        // Ничья все клетки заполнены
                         this.showDrawModal();
                     } else {
-                        // Переходим к следующему игроку
                         this.nextPlayer();
                     }
                     return;
                 }
             }
-            // Если колонка заполнена
             status.textContent = 'Эта колонка заполнена!';
             setTimeout(() => this.updateStatus(), 1500);
         }
 
         makeBotMove() {
-            // Убираем проверку this.isBotGame
-            // if (!this.isBotGame || this.currentPlayer !== 2 || this.winner !== 0) return;
-            // Добавляем проверку, что текущий игрок - активный бот
             const isCurrentPlayerBot = Object.values(bots).some(bot => 
                 bot.isActive && bot.id === this.currentPlayer
             );
 
-            // console.log('mBM: шаг 1')
             if (!isCurrentPlayerBot || this.winner !== 0) return;
 
-            // console.log('mBM: шаг 2')
-            // 1. Проверим, можем ли мы выиграть на следующем ходу
             for (let col = 0; col < this.columns; col++) {
                 const row = this.getLowestEmptyRow(col);
                 if (row !== -1) {
-                    this.board[row][col] = this.currentPlayer; // Используем this.currentPlayer
-                    if (this.checkWinForBot(row, col, this.currentPlayer)) { // Используем this.currentPlayer
+                    this.board[row][col] = this.currentPlayer;
+                    if (this.checkWinForBot(row, col, this.currentPlayer)) {
                         this.board[row][col] = 0;
-                        this.executeBotMove(row, col); // Выполняем ход
+                        this.executeBotMove(row, col);
                         return;
                     }
                     this.board[row][col] = 0;
                 }
             }
-            // console.log('mBM: шаг 3')
 
-            // 2. Проверим, может ли выиграть *любой* другой игрок (не бот) на следующем ходу и заблокируем его
-            // Найдем ID обычного игрока (не бота)
-            let humanPlayerId = 1; // Предположим, что первый обычный игрок - это 1
+            let humanPlayerId = 1;
             for (let i = 1; i <= this.players; i++) {
                 if (!Object.values(bots).some(bot => bot.id === i)) {
                     humanPlayerId = i;
                     break;
                 }
             }
-            // console.log('mBM: шаг 4')
             
             for (let col = 0; col < this.columns; col++) {
                 const row = this.getLowestEmptyRow(col);
                 if (row !== -1) {
-                    this.board[row][col] = humanPlayerId; // Предполагаем ход человека
-                    if (this.checkWinForBot(row, col, humanPlayerId)) { // Проверяем его победу
+                    this.board[row][col] = humanPlayerId;
+                    if (this.checkWinForBot(row, col, humanPlayerId)) {
                         this.board[row][col] = 0;
-                        this.executeBotMove(row, col); // Заблокировать
+                        this.executeBotMove(row, col);
                         return;
                     }
                     this.board[row][col] = 0;
                 }
             }
-            // console.log('mBM: шаг 5')
 
-            // 3. Если нет срочных ходов, сделаем случайный ход в неполную колонку
             const availableColumns = [];
             for (let col = 0; col < this.columns; col++) {
                 if (this.getLowestEmptyRow(col) !== -1) {
@@ -814,40 +824,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // console.log('mBM: шаг 6')
-
             if (availableColumns.length > 0) {
                 const randomCol = availableColumns[Math.floor(Math.random() * availableColumns.length)];
                 const row = this.getLowestEmptyRow(randomCol);
                 this.executeBotMove(row, randomCol);
             }
-
-            // console.log('mBM: шаг 7 финал')
-            // Если нет доступных колонок, игра уже должна была закончиться по ничьей
         }
 
-        // Вспомогательная функция для поиска нижней пустой строки в колонке (остаётся без изменений)
         getLowestEmptyRow(column) {
             for (let row = this.rows - 1; row >= 0; row--) {
                 if (this.board[row][column] === 0) {
                     return row;
                 }
             }
-            return -1; // Колонка полная
+            return -1;
         }
 
-        // Вспомогательная функция для проверки победы (для бота) (остаётся без изменений)
         checkWinForBot(row, col, player) {
             const directions = [
-                { dr: 0, dc: 1 },  // Горизонталь
-                { dr: 1, dc: 0 },  // Вертикаль
-                { dr: 1, dc: 1 },  // Диагональ /
-                { dr: 1, dc: -1 }  // Диагональ \
+                { dr: 0, dc: 1 },
+                { dr: 1, dc: 0 },
+                { dr: 1, dc: 1 },
+                { dr: 1, dc: -1 }
             ];
 
             for (const { dr, dc } of directions) {
                 let count = 1;
-                // Проверяем в одном направлении
                 let r = row + dr;
                 let c = col + dc;
                 while (r >= 0 && r < this.rows && c >= 0 && c < this.columns && this.board[r][c] === player) {
@@ -855,7 +857,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     r += dr;
                     c += dc;
                 }
-                // Проверяем в противоположном направлении
                 r = row - dr;
                 c = col - dc;
                 while (r >= 0 && r < this.rows && c >= 0 && c < this.columns && this.board[r][c] === player) {
@@ -871,24 +872,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         executeBotMove(row, col) {
-            // Убираем жесткое присваивание this.board[row][col] = 2;
-            // Используем текущего игрока (который является ботом)
             const isCurrentPlayerBot = Object.values(bots).some(bot => 
                 bot.isActive && bot.id === this.currentPlayer
             );
             if (!isCurrentPlayerBot || this.winner !== 0) return;
 
-            this.board[row][col] = this.currentPlayer; // Бот делает ход от своего имени
+            this.board[row][col] = this.currentPlayer;
             this.movesCount++;
             this.updateBoard();
-            if (this.checkWin(row, col)) { // Используем оригинальную проверку
-                this.winner = this.currentPlayer; // Победитель - текущий (бот)
-                
-                // Обновляем счет бота. Нужно определить индекс.
-                // Поскольку playerScores рассчитан на игроков 1-4, 
-                // для бота с ID=2 (при 1 игроке) используем индекс 1.
-                // Это работает для текущей простой логики.
-                // Для более сложных случаев нужна отдельная структура счета.
+            if (this.checkWin(row, col)) {
+                this.winner = this.currentPlayer;
                 if (this.currentPlayer >= 1 && this.currentPlayer <= 4) {
                      playerScores[this.currentPlayer - 1]++; 
                 } else {
@@ -898,7 +891,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (this.movesCount === this.maxMoves) {
                 this.showDrawModal();
             } else {
-                this.nextPlayer(); // Передаем ход следующему игроку/боту
+                this.nextPlayer();
             }
         }
 
@@ -907,31 +900,25 @@ document.addEventListener('DOMContentLoaded', () => {
             cells.forEach(cell => {
                 const row = parseInt(cell.dataset.row);
                 const col = parseInt(cell.dataset.col);
-                // Убираем все классы игроков и выигрышные
                 cell.classList.remove('player1', 'player2', 'player3', 'player4', 'winning-cell');
-                cell.textContent = ''; // Очищаем содержимое
+                cell.textContent = '';
 
                 const playerNumber = this.board[row][col];
                 if (playerNumber !== 0) {
-                    // Добавляем класс соответствующего игрока
                     cell.classList.add(`player${playerNumber}`);
 
                     const bot = Object.values(bots).find(b => b.isActive && b.id === playerNumber);
                     if (bot){
                         cell.textContent = `${bot.symbol}`;
                     } else {
-
-                        // --- ИЗМЕНЕНО: Определяем символ игрока ---
-                        let playerSymbol = themeSymbols[currentTheme]; // По умолчанию
+                        let playerSymbol = themeSymbols[currentTheme];
                         if (isCreativeMode && playerThemesInCreative[playerNumber]) {
-                            // В творческом режиме используем уникальную тему игрока
                             playerSymbol = themeSymbols[playerThemesInCreative[playerNumber]] || themeSymbols['default'];
                         }
-                        cell.textContent = playerSymbol; // Устанавливаем символ
+                        cell.textContent = playerSymbol;
                     }
                 }
 
-                // Помечаем выигрышные ячейки
                 if (this.winningCells.some(c => c.row === row && c.col === col)) {
                     cell.classList.add('winning-cell');
                 }
@@ -941,15 +928,14 @@ document.addEventListener('DOMContentLoaded', () => {
         checkWin(row, col) {
             const player = this.board[row][col];
             const directions = [
-                { dr: 0, dc: 1 },  // Горизонталь ↔
-                { dr: 1, dc: 0 },  // Вертикаль  ↨
-                { dr: 1, dc: 1 },  // Диагональ ↘
-                { dr: 1, dc: -1 }  // Диагональ ↙
+                { dr: 0, dc: 1 },
+                { dr: 1, dc: 0 },
+                { dr: 1, dc: 1 },
+                { dr: 1, dc: -1 }
             ];
             for (const { dr, dc } of directions) {
                 let count = 1;
                 this.winningCells = [{ row, col }];
-                // Проверяем в одном направлении
                 let r = row + dr;
                 let c = col + dc;
                 while (r >= 0 && r < this.rows && c >= 0 && c < this.columns && this.board[r][c] === player) {
@@ -958,7 +944,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     r += dr;
                     c += dc;
                 }
-                // Проверяем в противоположном направлении
                 r = row - dr;
                 c = col - dc;
                 while (r >= 0 && r < this.rows && c >= 0 && c < this.columns && this.board[r][c] === player) {
@@ -976,50 +961,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         nextPlayer() {            
-            // Сначала определяем всех участников игры (игроки + активные боты)
             const allPlayersAndBots = [];
-
-            // Добавляем обычных игроков
             for (let i = 1; i <= this.players; i++) {
                 allPlayersAndBots.push(i);
             }
-
-            // Добавляем активных ботов
             Object.values(bots).forEach(bot => {
                 if (bot.isActive) {
                     allPlayersAndBots.push(bot.id);
                 }
             });
-
-            // Сортируем по ID для определения порядка хода
             allPlayersAndBots.sort((a, b) => a - b);
-
-            // Находим индекс текущего игрока в этом списке
             const currentIndex = allPlayersAndBots.indexOf(this.currentPlayer);
-
             if (currentIndex !== -1) {
-                // Переходим к следующему игроку/боту по кругу
                 const nextIndex = (currentIndex + 1) % allPlayersAndBots.length;
                 this.currentPlayer = allPlayersAndBots[nextIndex];
             } else {
-                // На случай, если что-то пошло не так, возвращаемся к игроку 1
                 this.currentPlayer = 1;
             }
 
             this.updateStatus();
-            // Обновляем выделение текущего игрока
             document.querySelectorAll('.player').forEach(playerElement => {
-                // --- ИЗМЕНЕНО: Обновление выделения с учетом ботов ---
-                // Получаем ID из id элемента (player1, player2, bot3 и т.д.)
                 const elementId = playerElement.id;
                 let elementPlayerId;
-
                 if (elementId.startsWith('player')) {
                     elementPlayerId = parseInt(elementId.replace('player', ''));
                 } else if (elementId.startsWith('bot')) {
                     elementPlayerId = parseInt(elementId.replace('bot', ''));
                 }
-
                 if (elementPlayerId === this.currentPlayer) {
                     playerElement.classList.add('current-turn');
                     playerElement.classList.remove('winner', 'loser');
@@ -1028,7 +996,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // --- НОВОЕ: Проверка, не ходит ли теперь бот ---
             const isCurrentPlayerBot = Object.values(bots).some(bot => 
                 bot.isActive && bot.id === this.currentPlayer
             );
@@ -1038,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.makeBotMove();
                 }, 500);
             } else {
-                console.log("nextPlayer: Ход человека или игра окончена"); // Отладка
+                console.log("nextPlayer: Ход человека или игра окончена");
             }
         }
 
@@ -1049,7 +1016,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (isCurrentPlayerBot) {
                 const botName = Object.values(bots).find(b => b.id === this.currentPlayer)?.name || 'Бот'
-
                 status.textContent = t('statusBotTurn', {botName : botName});
             } else {
                 const playerName = playerNicknames[this.currentPlayer] || t('playerName', {number: this.currentPlayer})
@@ -1062,76 +1028,43 @@ document.addEventListener('DOMContentLoaded', () => {
             const winnerBot = Object.values(bots).find(bot => bot.id === this.winner);
             
             if (winnerBot) {
-                winDescription.textContent = t('winDescriptionBot', {winnerBot: winnerBot.name}) //`${winnerBot.name} выиграл!`;
+                winDescription.textContent = t('winDescriptionBot', {winnerBot: winnerBot.name})
             } else {
                 const winnerName = playerNicknames[this.winner] || t('playerName', {number: this.winner})
-                winDescription.textContent = t('winDescriptionPlayer', {winnerName: winnerName}) //`${playerNicknames[this.winner] || `Игрок ${this.winner}`} победил!`;
+                winDescription.textContent = t('winDescriptionPlayer', {winnerName: winnerName})
             }
 
             winModal.style.display = 'flex';
-            // Помечаем выигрышные ячейки
             this.updateBoard();
 
-            // --- ИЗМЕНЕНО: Устанавливаем lastLoser сразу после победы ---
-            // Определяем проигравшего для следующей игры
             if (this.players === 1) {
-                // Если 1 игрок, проигравший - это он сам? Или следующий по порядку?
-                // В контексте "ходит проигравший", если он выиграл, возможно, 
-                // следующий по порядку ходит первым. Но если он выиграл, он не проигравший.
-                // Проще всего сбросить, чтобы начинал Игрок 1.
-                // ИЛИ, если бот участвовал, проигравший - бот, если победил человек, и наоборот.
-                // Предположим, в режиме "1 игрок" бот всегда есть (ID=2).
-                // Если победил игрок 1, проигравший - бот (2). Если победил бот (2), проигравший - игрок (1).
-                // Нужно проверить, есть ли активный бот.
                 const activeBots = Object.values(bots).filter(bot => bot.isActive);
                 if (activeBots.length > 0) {
-                    // Предполагаем игру "1 игрок против бота"
                     lastLoser = this.winner === 1 ? activeBots[0].id : 1;
                 } else {
-                    // Нет бота, сбросим
                     lastLoser = null; 
                 }
             } else if (this.players === 2) {
-                // Для 2 игроков проигравший - тот, кто не выиграл
                 lastLoser = this.winner === 1 ? 2 : 1;
             } else {
-                // Для 3+ игроков, логика сложнее. 
-                // Можно считать "проигравшим" следующего по порядку, или сбросить.
-                // Пока сбросим, как в оригинале.
                 lastLoser = null; 
             }
-            console.log(`Победитель: ${this.winner}, Проигравший (для следующей игры): ${lastLoser}`); // Для отладки
-            // --- КОНЕЦ ИЗМЕНЕНИЙ ---
+            console.log(`Победитель: ${this.winner}, Проигравший (для следующей игры): ${lastLoser}`);
 
-            // --- НОВОЕ: Меняем цвета игроков на противоположные (если игроков >= 2) ---
             if (this.players >= 2) {
-                // Создаем временную копию массива цветов
                 const tempColors = [...playerColors];
-
-                // Меняем цвета: победитель получает цвет проигравшего, проигравший - цвет победителя
-                // Для простоты, обмениваем цвета первого и второго игрока.
-                // Для 3+ игроков логика может быть сложнее, например, все получают цвет следующего.
-                // Здесь реализована логика: цвета игроков сдвигаются влево (1->2, 2->3, 3->4, 4->1)
                 if (this.players === 2) {
-                     // Для 2 игроков просто меняем местами
-                     // lastLoser уже установлен выше
                      playerColors[0] = tempColors[1];
                      playerColors[1] = tempColors[0];
                 } else {
-                    // Для 3+ игроков: сдвигаем влево
                     for (let i = 0; i < this.players; i++) {
                         const nextIndex = (i + 1) % this.players;
                         playerColors[i] = tempColors[nextIndex];
                     }
-                    // lastLoser уже сброшен в null выше
                 }
-
-                // Обновляем CSS переменные
                 for (let i = 0; i < this.players; i++) {
                     document.documentElement.style.setProperty(`--player${i + 1}`, playerColors[i]);
                 }
-
-                // Обновляем цвета в интерфейсе игроков
                 document.querySelectorAll('.player').forEach((player, index) => {
                     if (index + 1 === this.winner) {
                         player.classList.add('winner');
@@ -1139,12 +1072,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         player.classList.add('loser');
                     }
                 });
-
-                // Обновляем цвета в счете
                 document.querySelectorAll('.score-item').forEach((scoreItem, index) => {
                     const playerColorElement = scoreItem.querySelector('.player-color');
                     if (playerColorElement && index < this.players) {
-                        // Используем рабочую копию цветов
                         playerColorElement.style.backgroundColor = playerColors[index];
                     }
                 });
@@ -1171,7 +1101,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     isBot: false
                 };
             }
-
             return null;
         }
     }
@@ -1180,57 +1109,37 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateGameLanguage() {
     console.log("Обновление языка интерфейса игры...");
     
-    // 1. Если игра запущена, обновляем динамические элементы
     if (window.game) {
-        // a. Обновляем статус игры
         window.game.updateStatus(); 
         console.log("  - Статус обновлен");
-
-        // b. Обновляем имена игроков и ботов в панелях game-info и score-board
         window.game.createPlayersUI();
         window.game.createScoreBoard();
         console.log("  - Информация об игроках и счет обновлены");
 
-        // c. Обновляем текст в модальном окне победы, если оно открыто
         const winModalElement = document.getElementById('winModal');
         if (winModalElement && winModalElement.style.display !== 'none') {
             console.log("  - Обновление модального окна победы");
-            // Получаем элементы внутри модального окна
-            const winMsgEl = document.getElementById('winMessage'); // Заголовок "Победа!"
-            // winDescription обновляется динамически в showWinModal, но мы можем обновить заголовок
+            const winMsgEl = document.getElementById('winMessage');
             const playAgainBtnEl = document.getElementById('playAgainBtn');
             const backToMainBtnEl = document.getElementById('backToMainFromWin');
 
-            // Обновляем статический текст
             if (winMsgEl) {
-                winMsgEl.textContent = t('modals.win.title'); // "Победа!" / "Victory!"
+                winMsgEl.textContent = t('modals.win.title');
             }
             if (playAgainBtnEl) {
-                playAgainBtnEl.textContent = t('PlayAgainBtn'); // "Играть снова" / "Play Again"
+                playAgainBtnEl.textContent = t('PlayAgainBtn');
             }
             if (backToMainBtnEl) {
-                backToMainBtnEl.textContent = t('BackToMainFromWin'); // "Назад в меню" / "Back to Menu"
+                backToMainBtnEl.textContent = t('BackToMainFromWin');
             }
             
-            // Текст описания победителя (например, "Игрок 1 победил!") обновляется
-            // динамически внутри game.showWinModal() или при вызове этого метода.
-            // Если вы хотите обновить его немедленно, не закрывая модалку,
-            // вам нужно знать, кто победил (window.game.winner) и тип победителя (игрок/бот).
-            // Это сложнее, так как требует повторного формирования сообщения.
-            // Проще всего пересоздать сообщение, вызвав showWinModal снова, 
-            // но это может быть не идеально, если модалка анимирована.
-            // Альтернатива: хранить состояние победителя и обновлять описание отдельно.
-            // Пока оставим динамическое обновление на момент вызова showWinModal.
-            // Но если игра уже закончена, можно обновить описание:
             if (window.game.winner) {
                  const winDescEl = document.getElementById('winDescription');
                  if (winDescEl) {
-                     // Повторяем логику из showWinModal для формирования текста
                      const winnerBot = Object.values(window.bots || {}).find(bot => bot.id === window.game.winner);
                      if (winnerBot) {
                          winDescEl.textContent = t('modals.win.description_bot', { winnerName: winnerBot.name });
                      } else {
-                         // Предполагаем, что playerNicknames доступен глобально или через window.game
                          const winnerName = (window.playerNicknames && window.playerNicknames[window.game.winner]) || 
                                             t('game.player', { number: window.game.winner });
                          winDescEl.textContent = t('modals.win.description_player', { winnerName: winnerName });
@@ -1239,39 +1148,32 @@ function updateGameLanguage() {
             }
         }
 
-        // d. Обновляем текст в модальном окне ничьей, если оно открыто
         const drawModalElement = document.getElementById('drawModal');
         if (drawModalElement && drawModalElement.style.display !== 'none') {
              console.log("  - Обновление модального окна ничьей");
-             // В текущем HTML у <h2> и <p> нет id, добавим их в HTML или найдем по тегу/позиции
-             // Предположим, вы добавили id="drawModalTitle" и id="drawModalDescription"
-             const drawTitleEl = document.getElementById('drawModalTitle'); // <h2>
-             const drawDescEl = document.getElementById('drawModalDescription'); // <p>
+             const drawTitleEl = document.getElementById('drawModalTitle');
+             const drawDescEl = document.getElementById('drawModalDescription');
              const playAgainDrawBtnEl = document.getElementById('playAgainAfterDrawBtn');
              const backToMainDrawBtnEl = document.getElementById('backToMainAfterDrawBtn');
 
              if (drawTitleEl) {
-                 drawTitleEl.textContent = t('modals.draw.title'); // "Ничья!" / "Draw!"
+                 drawTitleEl.textContent = t('modals.draw.title');
              }
              if (drawDescEl) {
-                 drawDescEl.textContent = t('modals.draw.description'); // "Все ячейки..."
+                 drawDescEl.textContent = t('modals.draw.description');
              }
              if (playAgainDrawBtnEl) {
-                 playAgainDrawBtnEl.textContent = t('playAgainAfterDrawBtn'); // "Играть снова"
+                 playAgainDrawBtnEl.textContent = t('playAgainAfterDrawBtn');
              }
              if (backToMainDrawBtnEl) {
-                 backToMainDrawBtnEl.textContent = t('backToMainAfterDrawBtn'); // "Назад в меню"
+                 backToMainDrawBtnEl.textContent = t('backToMainAfterDrawBtn');
              }
         }
     } else {
         console.log("  - Игра не запущена, обновление только статических элементов");
     }
 
-    // 2. Обновляем статические текстовые элементы на странице (кнопки, заголовки и т.д.)
-    // Предполагается, что функция applyTranslations() уже существует и делает это.
-    // Если она не глобальная или не была вызвана, можно вызвать её здесь.
-    // applyTranslations(); // Убедитесь, что эта функция доступна
     console.log("  - Статические элементы обновлены (предполагается вызов applyTranslations)");
 }
-// Делаем функцию доступной глобально, если она еще не такая
+
 window.updateGameLanguage = updateGameLanguage;
