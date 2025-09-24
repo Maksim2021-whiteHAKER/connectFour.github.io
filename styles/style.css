@@ -273,15 +273,6 @@ button:hover {
     flex-wrap: wrap;
 }
 
-.score-board {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
 .score-item {
     display: flex;
     align-items: center;
@@ -295,15 +286,29 @@ button:hover {
 .player {
     display: flex;
     align-items: center;
+    gap: 4px;
     padding: 10px 15px;
     border-radius: 5px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin: 5px
+    transition: all 0.2s ease;
+    margin-bottom: 8px;
+}
+
+.player-score {
+    margin-left: 1.5px;
+    font-weight: bold;
+}
+
+.player span:last-child {
+    font-size: 16px;
+    color: #000;
 }
 
 .player.current-turn {
     animation:  pulse 1.5s infinite;
+    background-color: white;
     box-shadow: 0 0 15px rgba(200, 10, 60, 0.9);
 }
 
@@ -592,13 +597,36 @@ button:hover {
     z-index: 1000;
 }
 
-.modal-content {
+.modal-content-body.hidden {
+    display: none !important;
+}
+
+.modal-content, .modal-content_game {
+    position: relative;
     background-color: white;
     padding: 25px;
     border-radius: 10px;
     text-align: center;
     max-width: 90%;
     width: 400px;
+}
+
+.hide-view {    
+    padding: 4px 8px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.0);
+    font-size: 25px;
+    width: 45px;
+    height: 45px;
+    border-radius: 160px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+
+.hide-view:hover {
+    background-color: #e0e0e0;
 }
 
 .modal h2 {

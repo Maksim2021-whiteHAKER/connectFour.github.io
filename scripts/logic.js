@@ -95,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const addPlayerBtn = document.getElementById('addPlayerBtn');
     const removePlayerBtn = document.getElementById('removePlayerBtn');
     const container = document.querySelector('.container');
-    const scoreBoard = document.getElementById('scoreBoard');
     const gameInfo = document.getElementById('gameInfo');
     const status = document.getElementById('status');
     const columnNumbers = document.getElementById('columnNumbers');
@@ -114,6 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const playAgainAfterDrawBtn = document.getElementById('playAgainAfterDrawBtn');
     const backToMainFromWin = document.getElementById('backToMainFromWin');
     const backToMainAfterDrawBtn = document.getElementById('backToMainAfterDrawBtn');
+    const modalcontentgameWin = document.getElementById('mcgWin');
+    const modalcontentgameDraw = document.getElementById('mcgDraw');
+    const toggleBoardViewWinBtn = document.getElementById('toggleWinBtn');
+    const toggleBoardViewDrawBtn = document.getElementById('toggleDrawBtn');
+    const winModalContentBody = document.querySelector('#winModal .modal-content-body');
+    const drawModalContentBody = document.querySelector('#drawModal .modal-content-body');
 
     // Единое модальное окно для настроек игроков
     const playerSettingsModal = document.getElementById('playerSettingsModal');
@@ -128,6 +133,32 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let currentPlayerBeingConfigured = 0; // Текущий игрок, настройки которого редактируются
+    let hideModalWin = false;
+    let hideModalDraw = false;
+
+    toggleBoardViewWinBtn.addEventListener('click', () => {
+        if (hideModalWin){
+            winModalContentBody.classList.remove('hidden')
+        } else {
+            winModalContentBody.classList.add('hidden')
+        }
+        hideModalWin = !hideModalWin;
+        modalcontentgameWin.style.backgroundColor = hideModalWin ? 'rgba(0, 0, 0, 0.1)' : 'white';
+        winModal.style.backgroundColor = hideModalWin ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.7)';
+        toggleBoardViewWinBtn.textContent = hideModalWin ? '🐵' : '🙈';
+    })
+
+    toggleBoardViewDrawBtn.addEventListener('click', () => {
+        if (hideModalDraw){
+            drawModalContentBody.classList.remove('hidden')
+        } else {
+            drawModalContentBody.classList.add('hidden')
+        }
+        hideModalDraw = !hideModalDraw;
+        modalcontentgameDraw.style.backgroundColor = hideModalDraw ? 'rgba(0, 0, 0, 0.1)' : 'white';
+        drawModal.style.backgroundColor = hideModalDraw ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.7)';
+        toggleBoardViewDrawBtn.textContent = hideModalDraw ? '🐵' : '🙈';
+    })
 
     function toggleButtonsMenu(hide, callback) {
         const buttonsMenu = document.querySelector('.buttons-menu');
@@ -274,7 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Пересоздаём интерфейс игроков и счет
         game.createPlayersUI();
-        game.createScoreBoard();
 
         // Обновляем статус
         game.updateStatus();
@@ -304,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Пересоздаём интерфейс игроков и счет
         game.createPlayersUI();
-        game.createScoreBoard();
 
         // Обновляем статус
         game.updateStatus();
@@ -621,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.movesCount = 0;
 
             this.createPlayersUI();
-            this.createScoreBoard();
+            
             this.createColumnNumbers();
             this.createRowLetters();
             this.createBoard();
@@ -653,54 +682,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isCreativeMode && playerThemesInCreative[i]) {
                     playerSymbol = themeSymbols[playerThemesInCreative[i]] || themeSymbols['default'];
                 }
+                // формируем текст " Игрок 1 {символ} - счет"
+                // используем t('game.player', {number: i}) для перевода "Игрок N"
+                const scoreText = `${playerScores[i-1]}`; // счет игрока
                 playerElement.innerHTML = `
-                    <div class="player-color"></div>
-                    <span>${playerNicknames[i] || `Игрок ${i}`} ${playerSymbol}</span>
+                    <div class="player-color" style="background-color: ${playerColors[i-1]}"></div>
+                    <span>${playerSymbol} ${playerNicknames[i] || `Игрок ${i}`}:</span>
+                    <span class="player-score">${scoreText}</span>
                 `;
                 gameInfo.appendChild(playerElement);
             }
 
-             Object.values(bots).forEach(bot => {
+            // Отображаем ботов, если они есть
+            Object.values(bots).forEach(bot => {
                 if (bot.isActive) {
                     const botElement = document.createElement('div');
-                    botElement.className = `player bot`;
+                    botElement.className = 'player bot';
                     botElement.id = `bot${bot.id}`;
-                    
                     botElement.innerHTML = `
                         <div class="player-color" style="background-color: ${bot.color};"></div>
                         <span>${bot.name} ${bot.symbol}</span>
+                        <span class="player-score">${playerScores[bot.id - 1] || 0}</span> <!-- Предполагается, что счет бота хранится в playerScores -->
                     `;
                     gameInfo.appendChild(botElement);
                 }
             });
-        }
 
-        createScoreBoard() {
-            scoreBoard.innerHTML = '';
-            for (let i = 1; i <= this.players; i++) {
-                const scoreItem = document.createElement('div');
-                scoreItem.className = 'score-item';
-                let playerSymbol = themeSymbols[currentTheme];
-                if (isCreativeMode && playerThemesInCreative[i]) {
-                    playerSymbol = themeSymbols[playerThemesInCreative[i]] || themeSymbols['default'];
-                }
-                scoreItem.innerHTML = `
-                    <div class="player-color" style="background-color: ${playerColors[i-1]}"></div>
-                    <span>${playerSymbol} ${playerNicknames[i] || `Игрок ${i}`}: ${playerScores[i-1]}</span>`;
-                scoreBoard.appendChild(scoreItem);
-            }
-
-            Object.values(bots).forEach(bot => {
-                if (bot.isActive) {
-                    const scoreItem = document.createElement('div');
-                    scoreItem.className = 'score-item bot-score';
-                    const botScoreIndex = bot.id - 1;
-                    scoreItem.innerHTML = `
-                        <div class="player-color" style="background-color: ${bot.color};"></div>
-                        <span>${bot.symbol} ${bot.name}: ${playerScores[botScoreIndex] || 0}</span>`;
-                    scoreBoard.appendChild(scoreItem);
-                }
-            });
         }
 
         createColumnNumbers() {
@@ -1036,6 +1043,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             winModal.style.display = 'flex';
+            
             this.updateBoard();
 
             if (this.players === 1) {
@@ -1114,7 +1122,6 @@ function updateGameLanguage() {
         window.game.updateStatus(); 
         console.log("  - Статус обновлен");
         window.game.createPlayersUI();
-        window.game.createScoreBoard();
         console.log("  - Информация об игроках и счет обновлены");
 
         const winModalElement = document.getElementById('winModal');

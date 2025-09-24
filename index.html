@@ -10,7 +10,7 @@
 </head>
 <body>
     <h1 id="gameTitle">4 в ряд</h1>
-    <span id="ver">0.0.0.6</span>
+    <span id="ver">0.0.0.7</span>
     <h4 id="versionSpan" class="version"></h4>
 
     <div id="languageSliderContainer">
@@ -142,20 +142,26 @@
     </div>
 
     <div class="modal" id="winModal">
-        <div class="modal-content">
-            <h2 id="winMessage">Победа!</h2>
-            <p id="winDescription">Игрок 1 победил!</p>
-            <button id="playAgainBtn">Играть снова</button>
-            <button id="backToMainFromWin" class="back-button">Назад в меню</button>
+        <div class="modal-content_game" id="mcgWin">
+            <button id="toggleWinBtn" class="hide-view">🙈</button>
+            <div class="modal-content-body">
+                <h2 id="winMessage">Победа!</h2>
+                <p id="winDescription">Игрок 1 победил!</p>
+                <button id="playAgainBtn">Играть снова</button>
+                <button id="backToMainFromWin" class="back-button">Назад в меню</button>
+            </div>
         </div>
     </div>
 
     <div class="modal" id="drawModal">
-        <div class="modal-content">
-            <h2 id="drawModalTitle">Ничья!</h2>
-            <p id="drawModalDescription">Все ячейки заполнены, но никто не победил.</p>
-            <button id="playAgainAfterDrawBtn">Играть снова</button>
-            <button id="backToMainAfterDrawBtn" class="back-button">Назад в меню</button>
+        <div class="modal-content_game" id="mcgDraw">
+            <button id="toggleDrawBtn" class="hide-view">🙈</button>
+            <div class="modal-content-body">
+                <h2 id="drawModalTitle">Ничья!</h2>
+                <p id="drawModalDescription">Все ячейки заполнены, но никто не победил.</p>
+                <button id="playAgainAfterDrawBtn">Играть снова</button>
+                <button id="backToMainAfterDrawBtn" class="back-button">Назад в меню</button>
+            </div>
         </div>
     </div>       
 
