@@ -8,6 +8,7 @@ const translations = {
     // Заголовок и версия
     "gameTitle": {
         "ru": "4 в ряд",
+        "sr": "4 у низу",
         "en": "4 in row",
         "es": "4 en una fila",
         "zh-CN": "连续4个",
@@ -21,6 +22,7 @@ const translations = {
     },
     "versionSpan": {
         "ru": "ВЕРСИЯ {{version}}",
+        "sr": "ВЕРЗИЈА {{version}}",
         "en": "VERSION {{version}}",
         "es": "VERSIÓN {{version}}",
         "zh-CN": "版本 {{version}}",
@@ -35,6 +37,7 @@ const translations = {
     // Кнопки главного меню
     "normalMode": {
         "ru": "Обычная",
+        "sr": "Обична",
         "en": "Normal",
         "es": "Normal",
         "zh-CN": "普通模式",
@@ -48,6 +51,7 @@ const translations = {
     },
     "creativeMode": {
         "ru": "Творческая",
+        "sr": "Креативна",
         "en": "Creative",
         "es": "Creativo",
         "zh-CN": "创造模式",
@@ -61,6 +65,7 @@ const translations = {
     },
     "customizationBtn": {
         "ru": "Настройки внешнего вида",
+        "sr": "Подешавања изгледа",
         "en": "Appearance Settings",
         "es": "Configuración de apariencia",
         "zh-CN": "外观设置",
@@ -73,8 +78,24 @@ const translations = {
         "udm": "Настройка вылтусыз"
     },
 
+    "aboutUsBtn": {
+        "ru": "Разработчик",
+        "sr": "Развијач",
+        "en": "Developer",
+        "es": "Desarrollador",
+        "zh-CN": "開發者 / 开发人",
+        "fr": "Développeur",
+        "de": "Entwickler",
+        "ja": "開発者",
+        "pt-BR": "Desenvolvedor",
+        "ar": "المطور",
+        "tr": "Geliştirici",
+        "udm": "Кылдытӥсь"
+    },
+
     "creativeSettingsTitle": {
         "ru": "Настройки творческого режима",
+        "sr": "Подешавања креативног режима",
         "en": "Creative Mode Settings",
         "es": "Configuración del modo creativo",
         "zh-CN": "创造模式设置",
@@ -88,6 +109,7 @@ const translations = {
     },
     "rowsLabel": {
         "ru": "Количество строк:",
+        "sr": "број редова",
         "en": "Number of rows:",
         "es": "Número de filas:",
         "zh-CN": "行数：",
@@ -101,6 +123,7 @@ const translations = {
     },
     "columnsLabel": {
         "ru": "Количество столбцов:",
+        "sr": "број колона",
         "en": "Number of columns:",
         "es": "Número de columnas:",
         "zh-CN": "列数：",
@@ -114,6 +137,7 @@ const translations = {
     },
     "playersLabel": {
         "ru": "Количество игроков (1-4):",
+        "sr": "број играча (1-4)",
         "en": "Number of players (1-4):",
         "es": "Número de jugadores (1-4):",
         "zh-CN": "玩家数量 (1-4)：",
@@ -127,6 +151,7 @@ const translations = {
     },
     "gameModeLabel": {
         "ru": "Режим игры в одного(режим творчества):",
+        "sr": "режим игре у једном (режим креативности)",
         "en": "Single Player Mode (Creative):",
         "es": "Modo de un jugador (Creativo):",
         "zh-CN": "单人模式（创造）：",
@@ -140,6 +165,7 @@ const translations = {
     },
     "gameModeSingle": {
         "ru": "Игрок против бота",
+        "sr": "Играч против бота",
         "en": "Player vs Bot",
         "es": "Jugador vs Bot",
         "zh-CN": "玩家对机器人",
@@ -153,6 +179,7 @@ const translations = {
     },
     "gameModeTest": {
         "ru": "Тестирование",
+        "sr": "Тестирање",
         "en": "Testing",
         "es": "Pruebas",
         "zh-CN": "测试",
@@ -166,6 +193,7 @@ const translations = {
     },
     "startCreativeBtn": {
         "ru": "Начать игру",
+        "sr": "Започните игру",
         "en": "Start Game",
         "es": "Iniciar juego",
         "zh-CN": "开始游戏",
@@ -179,6 +207,7 @@ const translations = {
     },
     "backToMainFromSettings": {
         "ru": "Назад в меню",
+        "sr": "Назад у мени",
         "en": "Back to Menu",
         "es": "Volver al menú",
         "zh-CN": "返回菜单",
@@ -194,6 +223,7 @@ const translations = {
     // Панель настройки внешнего вида
     "customizationPanelTitle": {
         "ru": "Настройки внешнего вида",
+        "sr": "Подешавања изгледа",
         "en": "Appearance Settings",
         "es": "Configuración de apariencia",
         "zh-CN": "外观设置",
@@ -207,6 +237,7 @@ const translations = {
     },
     "themeLabel": {
         "ru": "Выберите фигурки:",
+        "sr": "Изаберите фигуре",
         "en": "Choose pieces:",
         "es": "Elegir piezas:",
         "zh-CN": "选择棋子：",
@@ -220,6 +251,7 @@ const translations = {
     },
     "colorLabel": {
         "ru": "Выберите цвета игроков:",
+        "sr": "Изаберите боje играча",
         "en": "Choose player colors:",
         "es": "Elegir colores de jugadores:",
         "zh-CN": "选择玩家颜色：",
@@ -233,6 +265,7 @@ const translations = {
     },
     "saveCustomizationBtn": {
         "ru": "Сохранить",
+        "sr": "Сачувај",
         "en": "Save",
         "es": "Guardar",
         "zh-CN": "保存",
@@ -246,6 +279,7 @@ const translations = {
     },
     "backToMainFromCustomization": {
         "ru": "Назад в меню",
+        "sr": "Назад у мени",
         "en": "Back to Menu",
         "es": "Volver al menú",
         "zh-CN": "返回菜单",
@@ -258,34 +292,9 @@ const translations = {
         "udm": "Меню вылын"
     },
     // Модальные окна игроков
-    "player1ModalTitle": {
-        "ru": "Настройки Игрока 1",
-        "en": "Player 1 Settings",
-        "es": "Configuración del Jugador 1",
-        "zh-CN": "玩家1设置",
-        "fr": "Paramètres du Joueur 1",
-        "de": "Spieler 1 Einstellungen",
-        "ja": "プレイヤー1設定",
-        "pt-BR": "Configurações do Jogador 1",
-        "ar": "إعدادات اللاعب 1",
-        "tr": "1. Oyuncu Ayarları",
-        "udm": "Игрок 1 настройкаос"
-    },
-    "player1NicknameLabel": {
-        "ru": "Ник Игрока 1:",
-        "en": "Player 1 Nickname:",
-        "es": "Apodo del Jugador 1:",
-        "zh-CN": "玩家1昵称：",
-        "fr": "Pseudo du Joueur 1 :",
-        "de": "Spieler 1 Nickname:",
-        "ja": "プレイヤー1のニックネーム：",
-        "pt-BR": "Apelido do Jogador 1:",
-        "ar": "اسم اللاعب 1:",
-        "tr": "1. Oyuncu Takma Adı:",
-        "udm": "Игрок 1 ник:"
-    },
     "player1ThemeLabel": {
         "ru": "Выберите фигурку:",
+        "sr": "Изаберите фигуре",
         "en": "Choose piece:",
         "es": "Elegir pieza:",
         "zh-CN": "选择棋子：",
@@ -299,6 +308,7 @@ const translations = {
     },
     "player1ColorLabel": {
         "ru": "Выберите цвет:",
+        "sr": "Изаберите боje:",
         "en": "Choose color:",
         "es": "Elegir color:",
         "zh-CN": "选择颜色：",
@@ -312,6 +322,7 @@ const translations = {
     },
     "player1SaveBtn": {
         "ru": "Сохранить",
+        "sr": "Сачувај",
         "en": "Save",
         "es": "Guardar",
         "zh-CN": "保存",
@@ -325,6 +336,7 @@ const translations = {
     },
     "player2ModalTitle": {
         "ru": "Настройки Игрока 2",
+        "sr": "Подешавања играча 2",
         "en": "Player 2 Settings",
         "es": "Configuración del Jugador 2",
         "zh-CN": "玩家2设置",
@@ -338,6 +350,7 @@ const translations = {
     },
     "player2NicknameLabel": {
         "ru": "Ник Игрока 2:",
+        "sr": "Ник Играча 2",
         "en": "Player 2 Nickname:",
         "es": "Apodo del Jugador 2:",
         "zh-CN": "玩家2昵称：",
@@ -351,6 +364,7 @@ const translations = {
     },
     "player2ThemeLabel": {
         "ru": "Выберите фигурку:",
+        "sr": "Изаберите фигуре",
         "en": "Choose piece:",
         "es": "Elegir pieza:",
         "zh-CN": "选择棋子：",
@@ -364,6 +378,7 @@ const translations = {
     },
     "player2ColorLabel": {
         "ru": "Выберите цвет:",
+        "sr": "Изаберите боje:",
         "en": "Choose color:",
         "es": "Elegir color:",
         "zh-CN": "选择颜色：",
@@ -377,6 +392,7 @@ const translations = {
     },
     "player2SaveBtn": {
         "ru": "Сохранить",
+        "sr": "Сачувај",
         "en": "Save",
         "es": "Guardar",
         "zh-CN": "保存",
@@ -390,6 +406,7 @@ const translations = {
     },
     "player3ModalTitle": {
         "ru": "Настройки Игрока 3",
+        "sr": "Подешавања играча 3",
         "en": "Player 3 Settings",
         "es": "Configuración del Jugador 3",
         "zh-CN": "玩家3设置",
@@ -403,6 +420,7 @@ const translations = {
     },
     "player3NicknameLabel": {
         "ru": "Ник Игрока 3:",
+        "sr": "Ник Играча 3",
         "en": "Player 3 Nickname:",
         "es": "Apodo del Jugador 3:",
         "zh-CN": "玩家3昵称：",
@@ -416,6 +434,7 @@ const translations = {
     },
     "player3ThemeLabel": {
         "ru": "Выберите фигурку:",
+        "sr": "Изаберите фигуре",
         "en": "Choose piece:",
         "es": "Elegir pieza:",
         "zh-CN": "选择棋子：",
@@ -429,6 +448,7 @@ const translations = {
     },
     "player3ColorLabel": {
         "ru": "Выберите цвет:",
+        "sr": "Изаберите боje:",
         "en": "Choose color:",
         "es": "Elegir color:",
         "zh-CN": "选择颜色：",
@@ -442,6 +462,7 @@ const translations = {
     },
     "player3SaveBtn": {
         "ru": "Сохранить",
+        "sr": "Сачувај",
         "en": "Save",
         "es": "Guardar",
         "zh-CN": "保存",
@@ -455,6 +476,7 @@ const translations = {
     },
     "player4ModalTitle": {
         "ru": "Настройки Игрока 4",
+        "sr": "Подешавања играча 4",
         "en": "Player 4 Settings",
         "es": "Configuración del Jugador 4",
         "zh-CN": "玩家4设置",
@@ -468,6 +490,7 @@ const translations = {
     },
     "player4NicknameLabel": {
         "ru": "Ник Игрока 4:",
+        "sr": "Ник Играча 4",
         "en": "Player 4 Nickname:",
         "es": "Apodo del Jugador 4:",
         "zh-CN": "玩家4昵称：",
@@ -481,6 +504,7 @@ const translations = {
     },
     "player4ThemeLabel": {
         "ru": "Выберите фигурку:",
+        "sr": "Изаберите фигуре",
         "en": "Choose piece:",
         "es": "Elegir pieza:",
         "zh-CN": "选择棋子：",
@@ -494,6 +518,7 @@ const translations = {
     },
     "player4ColorLabel": {
         "ru": "Выберите цвет:",
+        "sr": "Изаберите боje:",
         "en": "Choose color:",
         "es": "Elegir color:",
         "zh-CN": "选择颜色：",
@@ -507,6 +532,7 @@ const translations = {
     },
     "player4SaveBtn": {
         "ru": "Сохранить",
+        "sr": "Сачувај",
         "en": "Save",
         "es": "Guardar",
         "zh-CN": "保存",
@@ -521,6 +547,7 @@ const translations = {
     // Игровой интерфейс
     "status": {
         "ru": "Подготовка к игре...",
+        "sr": "Припрема за игру...",
         "en": "Preparing game...",
         "es": "Preparando juego...",
         "zh-CN": "准备游戏...",
@@ -534,6 +561,7 @@ const translations = {
     },
     "restartBtn": {
         "ru": "Новая игра",
+        "sr": "Нова игра",
         "en": "New Game",
         "es": "Nuevo juego",
         "zh-CN": "新游戏",
@@ -547,6 +575,7 @@ const translations = {
     },
     "settingsBtn": {
         "ru": "Изменить настройки",
+        "sr": "Промени подешавања",
         "en": "Change Settings",
         "es": "Cambiar configuración",
         "zh-CN": "更改设置",
@@ -560,6 +589,7 @@ const translations = {
     },
     "addPlayerBtn": {
         "ru": "Добавить игрока",
+        "sr": "Додај играча",
         "en": "Add Player",
         "es": "Agregar jugador",
         "zh-CN": "添加玩家",
@@ -573,6 +603,7 @@ const translations = {
     },
     "removePlayerBtn": {
         "ru": "Удалить игрока",
+        "sr": "Уклони играча",
         "en": "Remove Player",
         "es": "Eliminar jugador",
         "zh-CN": "移除玩家",
@@ -586,6 +617,7 @@ const translations = {
     },
     "backToMainBtn": {
         "ru": "Назад в меню",
+        "sr": "Назад у мени",
         "en": "Back to Menu",
         "es": "Volver al menú",
         "zh-CN": "返回菜单",
@@ -593,12 +625,13 @@ const translations = {
         "de": "Zurück zum Menü",
         "ja": "メニューに戻る",
         "pt-BR": "Voltar ao menu",
-        "ar": "العودة إلى القائمة",
+        "ar": "العودة إلى القайمة",
         "tr": "Menüye Dön",
         "udm": "Меню вылын"
     },
     "connectionStatus": {
         "ru": "Локальная игра",
+        "sr": "Локална игра",
         "en": "Local Game",
         "es": "Juego local",
         "zh-CN": "本地游戏",
@@ -614,12 +647,14 @@ const translations = {
     // Хостинг
     "hostingTitle": {
         "ru": "Бесплатные варианты хостинга",
+        "sr": "Бесплатне опције хостинга",
         "en": "Free Hosting Options"
     },
 
     // Модальные окна (победа/ничья)
     "winModalTitle": {
         "ru": "Победа!",
+        "sr": "Победа!",
         "en": "Victory!",
         "es": "¡Victoria!",
         "zh-CN": "胜利！",
@@ -633,6 +668,7 @@ const translations = {
     },
     "playAgainBtn": {
         "ru": "Играть снова",
+        "sr": "Играј поново",
         "en": "Play Again",
         "es": "Jugar de nuevo",
         "zh-CN": "再玩一次",
@@ -646,6 +682,7 @@ const translations = {
     },
     "backToMainFromWin": {
         "ru": "Назад в меню",
+        "sr": "Назад у мени",
         "en": "Back to Menu",
         "es": "Volver al menú",
         "zh-CN": "返回菜单",
@@ -653,12 +690,13 @@ const translations = {
         "de": "Zurück zum Menü",
         "ja": "メニューに戻る",
         "pt-BR": "Voltar ao menu",
-        "ar": "العودة إلى القائمة",
+        "ar": "العودة إلى القайمة",
         "tr": "Menüye Dön",
         "udm": "Меню вылын"
     },
     "drawModalTitle": {
         "ru": "Ничья!",
+        "sr": "Нерешено!",
         "en": "Draw!",
         "es": "¡Empate!",
         "zh-CN": "平局！",
@@ -672,6 +710,7 @@ const translations = {
     },
     "drawModalDescription": {
         "ru": "Все ячейки заполнены, но никто не победил.",
+        "sr": "Све ћелије су попуњене, али нико није победио.",
         "en": "All cells are filled, but no one won.",
         "es": "Todas las celdas están llenas, pero nadie ganó.",
         "zh-CN": "所有格子都已填满，但没有人获胜。",
@@ -685,6 +724,7 @@ const translations = {
     },
     "playAgainAfterDrawBtn": {
         "ru": "Играть снова",
+        "sr": "Играј поново",
         "en": "Play Again",
         "es": "Jugar de nuevo",
         "zh-CN": "再玩一次",
@@ -698,6 +738,7 @@ const translations = {
     },
     "backToMainAfterDrawBtn": {
         "ru": "Назад в меню",
+        "sr": "Назад у мени",
         "en": "Back to Menu",
         "es": "Volver al menú",
         "zh-CN": "返回菜单",
@@ -705,7 +746,7 @@ const translations = {
         "de": "Zurück zum Menü",
         "ja": "メニューに戻る",
         "pt-BR": "Voltar ao menu",
-        "ar": "العودة إلى القائمة",
+        "ar": "العودة إلى القайمة",
         "tr": "Menüye Dön",
         "udm": "Меню вылын"
     },
@@ -713,6 +754,7 @@ const translations = {
     // --- Динамические тексты (произвольные ключи) ---
     "playerName": {
         "ru": "Игрок {{number}}",
+        "sr": "Играч {{number}}",
         "en": "Player {{number}}",
         "es": "Jugador {{number}}",
         "zh-CN": "玩家{{number}}",
@@ -726,6 +768,7 @@ const translations = {
     },
     "playerWithName": {
         "ru": "{{name}}",
+        "sr": "{{name}}",
         "en": "{{name}}",
         "es": "{{name}}",
         "zh-CN": "{{name}}",
@@ -739,6 +782,7 @@ const translations = {
     },
     "statusTurn": {
         "ru": "Ход {{playerName}}...",
+        "sr": "Потез {{playerName}}...",
         "en": "{{playerName}}'s turn...",
         "es": "Turno de {{playerName}}...",
         "zh-CN": "{{playerName}}的回合...",
@@ -752,6 +796,7 @@ const translations = {
     },
     "statusBotTurn": {
         "ru": "Ход {{botName}}...",
+        "sr": "Потез {{botName}}...",
         "en": "{{botName}}'s turn...",
         "es": "Turno de {{botName}}...",
         "zh-CN": "{{botName}}的回合...",
@@ -765,6 +810,7 @@ const translations = {
     },
     "winDescriptionPlayer": {
         "ru": "{{winnerName}} победил!",
+        "sr": "{{winnerName}} је победио!",
         "en": "{{winnerName}} wins!",
         "es": "¡{{winnerName}} gana!",
         "zh-CN": "{{winnerName}}获胜！",
@@ -778,6 +824,7 @@ const translations = {
     },
     "winDescriptionBot": {
         "ru": "{{winnerBot}} выиграл!",
+        "sr": "{{winnerBot}} је победио!",
         "en": "{{winnerBot}} wins!",
         "es": "¡{{winnerBot}} gana!",
         "zh-CN": "{{winnerBot}}获胜！",
@@ -793,6 +840,7 @@ const translations = {
     // имя игроков default
     "defaultNamePlayer": {
         "ru": "Игрок",
+        "sr": "Играч",
         "en": "Player",
         "es": "Jugador",
         "zh-CN": "玩家",
@@ -803,6 +851,49 @@ const translations = {
         "ar": "لاعب",
         "tr": "Oyuncu",
         "udm": "Шудӥсь",
+    },
+
+    "1stroke": {
+        "ru": "Привет! Меня зовут Владимиров Максим, и я разработчик этой игры '4 в ряд'.",
+        "sr": "Здраво! Зовем се Владимиров Максим и ја сам развојач ове игре '4 у низу'.",
+        "en": "Hi! My name is Vladimirov Maksim, and I'm the developer of this '4 in a Row' game.",
+        "es": "¡Hola! Me llamo Vladimirov Maksim y soy el desarrollador de este juego '4 en línea'.",
+        "zh-CN": "你好！我叫弗拉季米罗夫·马克西姆，我是这款'4连珠'游戏的开发者。",
+        "fr": "Bonjour ! Je m'appelle Vladimirov Maksim et je suis le développeur de ce jeu '4 en ligne'.",
+        "de": "Hallo! Ich heiße Vladimirov Maksim und ich bin der Entwickler dieses '4 gewinnt' Spiels.",
+        "ja": "こんにちは！私はヴラディミロフ・マキシムと申します。この'4つ並べ'ゲームの開発者です。",
+        "pt-BR": "Oi! Meu nome é Vladimirov Maksim e sou o desenvolvedor deste jogo '4 em linha'.",
+        "ar": "مرحباً! اسمي فلاديمиров ماكسيم وأنا مطور هذه اللعبة 'أربعة في صف'.",
+        "tr": "Merhaba! Adım Vladimirov Maksim ve bu '4 Satırda' oyununun geliştiricisiyim.",
+        "udm": "Чырткем! Мон Владимиров Максим 'ньыль радэн-радэн' шудон кылдытӥсь."
+    },
+    "2stroke": {
+        "ru": "Я создал её с использованием HTML, CSS и JavaScript",
+        "sr": "Направио сам је коришћењем HTML, CSS и JavaScript технологија",
+        "en": "I created it using HTML, CSS and JavaScript",
+        "es": "Lo creé usando HTML, CSS y JavaScript",
+        "zh-CN": "我使用HTML、CSS和JavaScript创建了它",
+        "fr": "Je l'ai créé en utilisant HTML, CSS et JavaScript",
+        "de": "Ich habe es mit HTML, CSS und JavaScript erstellt",
+        "ja": "HTML、CSS、JavaScriptを使用して作成しました",
+        "pt-BR": "Eu criei usando HTML, CSS e JavaScript",
+        "ar": "لقد أنشأتها باستخدام HTML وCSS وJavaScript",
+        "tr": "HTML, CSS ve JavaScript kullanarak oluşturdum",
+        "udm": "МОН СОЕ КЫЛДЫТӤ HTML, CSS но JavaScript уже КУТЫСА."
+    },
+    "3stroke": {
+        "ru": "Если у вас есть вопросы или предложения, вы можете связаться со мной:",
+        "sr": "Ако имате питања или сугестије, можете ме контактирати:",
+        "en": "If you have any questions or suggestions, you can contact me:",
+        "es": "Si tienes alguna pregunta o sugerencia, puedes contactarme:",
+        "zh-CN": "如果您有任何问题或建议，可以联系我：",
+        "fr": "Si vous avez des questions ou des suggestions, vous pouvez me contacter :",
+        "de": "Wenn Sie Fragen oder Vorschläge haben, können Sie mich kontaktieren:",
+        "ja": "ご質問やご提案があれば、私までご連絡ください：",
+        "pt-BR": "Se você tiver alguma dúvida ou sugestão, pode me contatar:",
+        "ar": "إذا كانت لديك أي أسئلة أو اقتراحات، يمكنك الاتصال بي:",
+        "tr": "Herhangi bir sorunuz veya öneriniz varsa, benimle iletişime geçebilirsiniz:",
+        "udm": "Юанъёсты яке ӵектонъёсты вань ке, монэн герӟаськыны быгатӥськоды:"
     }
 };
 
@@ -910,6 +1001,7 @@ console.log(`Translation system initialized. Current language: ${currentLanguage
 // Коды языков должны совпадать с теми, что используются в функции changeLanguage
 export const sliderLanguages = [
     { code: 'ru', name: 'Русский' },
+    { code: 'sr', name: 'Српски'},
     { code: 'en', name: 'English' },
     { code: 'es', name: 'Español' },
     { code: 'zh-CN', name: '中文' },
@@ -928,6 +1020,7 @@ export const sliderLanguages = [
 
 export const flagImages = {
     'ru': '/assets/flags/svg/myhomeland.svg',
+    'sr': '/assets/flags/svg/brotherSerb.svg',
     'en': '/assets/flags/svg/Flag-of-USAXPENP.svg',
     'es': '/assets/flags/svg/Flag-of-Spain.svg',
     'zh-CN': '/assets/flags/svg/Flag-of-China.svg',
@@ -942,6 +1035,7 @@ export const flagImages = {
 
 const flagEmoji = {
     'ru': "♾",
+    'sr': "😇",
     'en': "⚠",
     'es': "🌴",
     'zh-CN': "🟥🛠",

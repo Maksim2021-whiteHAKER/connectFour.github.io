@@ -87,6 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainMenu = document.getElementById('mainMenu');
     const creativeSettings = document.getElementById('creativeSettings');
     const customizationPanel = document.getElementById('customizationPanel');
+    const aboutUsPanel = document.getElementById('aboutUsPanel')
+    const aboutUsBtn = document.getElementById('aboutUsBtn')
+    const backToMainFromAbout = document.getElementById('backToMainFromAbout')
     const normalModeBtn = document.getElementById('normalMode');
     const creativeModeBtn = document.getElementById('creativeMode');
     const customizationBtn = document.getElementById('customizationBtn');
@@ -242,6 +245,10 @@ document.addEventListener('DOMContentLoaded', () => {
             customizationPanel.style.display = 'block';
         })
     });
+
+    aboutUsBtn.addEventListener('click', () => {
+        aboutUsPanel.style.display = 'flex';
+    })
 
     startCreativeBtn.addEventListener('click', () => {
         const rows = parseInt(document.getElementById('rows').value);
@@ -454,6 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backToMainFromCustomization.addEventListener('click', backToMainMenu);
     backToMainFromWin.addEventListener('click', backToMainMenu);
     backToMainAfterDrawBtn.addEventListener('click', backToMainMenu);
+    backToMainFromAbout.addEventListener('click', backToMainMenu);
 
     playAgainBtn.addEventListener('click', () => {
         winModal.style.display = 'none';
@@ -476,6 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
         customizationPanel.style.display = 'none';
         winModal.style.display = 'none';
         drawModal.style.display = 'none';
+        if (aboutUsPanel) aboutUsPanel.style.display = 'none';
         // Закрываем модальное окно настроек игрока
         playerSettingsModal.style.display = 'none';
         mainMenu.style.display = 'flex';
