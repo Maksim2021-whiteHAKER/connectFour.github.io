@@ -11,7 +11,7 @@
 </head>
 <body>
     <h1 id="gameTitle">4 в ряд</h1>
-    <span id="ver">0.0.0.7</span>
+    <span id="ver">0.0.0.8</span>
     <h4 id="versionSpan" class="version"></h4>
 
     <div id="languageSliderContainer">
@@ -63,7 +63,15 @@
                     <option id="gameModeSingle" value="single">Игрок против бота</option>
                     <option id="gameModeTest" value="test">Тестирование</option>
                 </select>
-            </div>    
+            </div>
+            <div class="form-group" id="gameDifficult" style="display: none;">
+                <label id="difficultyBotMode" for="difficultMode">Сложность бота:</label>
+                <select id="difficultMode" style="font-size: 64px; outline: none; border: none;" >
+                    <option id="difficult_easy" value="easy">👶</option>
+                    <option id="difficult_midium" value="medium">🤨</option>
+                    <option id="difficult_hard" value="hard">😈</option>
+                </select>
+            </div>
             <button id="startCreativeBtn">Начать игру</button>
             <button id="backToMainFromSettings" class="back-button">Назад в меню</button>
         </div>

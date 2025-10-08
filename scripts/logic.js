@@ -1,6 +1,7 @@
 // scripts/logic.js 
 import { logicSlider, sliderLanguages, flagImages, updateVersionDisplay } from "./translations.js";
 import { GAME_CONFIG } from './config.js'
+import { getBotMove } from "./bots.js";
 
 const availableThemes = GAME_CONFIG.themes;
 const availableColors = GAME_CONFIG.colors;
@@ -122,12 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleBoardViewDrawBtn = document.getElementById('toggleDrawBtn');
     const winModalContentBody = document.querySelector('#winModal .modal-content-body');
     const drawModalContentBody = document.querySelector('#drawModal .modal-content-body');
-
+    
     // Единое модальное окно для настроек игроков
     const playerSettingsModal = document.getElementById('playerSettingsModal');
     const playerModalTitle = document.getElementById('playerModalTitle');
     const playerNicknameInput = document.getElementById('playerNickname');
     const playerSaveBtn = document.getElementById('playerSaveBtn');
+    const difficultyModeSelect = document.getElementById('difficultMode')
 
     // Проверяем, что элементы существуют
     if (!playerSettingsModal || !playerModalTitle || !playerNicknameInput || !playerSaveBtn) {
@@ -190,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let game;
     let playerScores = [0, 0, 0, 0];
     let currentTheme = 'default';
+    let selectedBotDiff = difficultyModeSelect.value;
     let gameMode = 'single';
     let lastLoser = null;
     let maxPlayers = 4;
@@ -331,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 symbol: symbolBot,
                 color: "#808080",
                 isActive: true,
-                difficulty: gameMode === 'single' ? "medium" : "easy"
+                difficulty: selectedBotDiff
             };
             console.log("Бот снова добавлен:", bots[botId]);
         }
@@ -432,14 +435,31 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('players').addEventListener('input', (e) => {
         const playersCount = parseInt(e.target.value);
         const gameModeGroup = document.getElementById('gameModeGroup');
+        const gameDifficult = document.getElementById('gameDifficult')
         if (playersCount === 1){
             gameModeGroup.style.display = 'block';
+            gameDifficult.style.display = 'block';
         } else {
+            gameDifficult.style.display = 'none';
             gameModeGroup.style.display = 'none';
+
             gameMode = 'single';
             if (document.getElementById('gameMode')){
                 document.getElementById('gameMode').value = 'single';
+            }           
+            if (difficultyModeSelect){
+                difficultyModeSelect.value = selectedBotDiff;
             }
+        }
+    })
+
+    gameDifficult.addEventListener('change', (e) => {
+        if (difficultyModeSelect){
+            selectedBotDiff = e.target.value
+            // console.log(`Сложность бота выбрана`)
+
+        } else {
+            console.warn('Не найден элем difficultMode внутри gameDifficult');
         }
     })
 
@@ -509,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         bots = {};
 
-        if ((gameMode === 'single' || gameMode === 'test') && players === 1) {
+        if (gameMode === 'single' && players === 1) {
             const botId = players + 1; 
             bots[botId] = {
                 id: botId,
@@ -517,6 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 symbol: symbolBot,
                 color: "#808080",
                 isActive: true,
+                difficulty: selectedBotDiff
             };
             console.log("StartGAME: Бот добавлен:", bots[botId]);
         } else {
@@ -797,54 +818,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const isCurrentPlayerBot = Object.values(bots).some(bot => 
                 bot.isActive && bot.id === this.currentPlayer
             );
-
+            
+            // console.log(`mBM: ${isCurrentPlayerBot}`)
             if (!isCurrentPlayerBot || this.winner !== 0) return;
 
-            for (let col = 0; col < this.columns; col++) {
-                const row = this.getLowestEmptyRow(col);
-                if (row !== -1) {
-                    this.board[row][col] = this.currentPlayer;
-                    if (this.checkWinForBot(row, col, this.currentPlayer)) {
-                        this.board[row][col] = 0;
-                        this.executeBotMove(row, col);
-                        return;
-                    }
-                    this.board[row][col] = 0;
-                }
-            }
+            // console.log(`Бот: (ID: ${this.currentPlayer}) делает ход. Сложность: ${Object.values(bots).find(b => b.id === this.currentPlayer)?.difficulty || 'неизвестно'}`);
 
-            let humanPlayerId = 1;
-            for (let i = 1; i <= this.players; i++) {
-                if (!Object.values(bots).some(bot => bot.id === i)) {
-                    humanPlayerId = i;
-                    break;
-                }
-            }
-            
-            for (let col = 0; col < this.columns; col++) {
-                const row = this.getLowestEmptyRow(col);
-                if (row !== -1) {
-                    this.board[row][col] = humanPlayerId;
-                    if (this.checkWinForBot(row, col, humanPlayerId)) {
-                        this.board[row][col] = 0;
-                        this.executeBotMove(row, col);
-                        return;
-                    }
-                    this.board[row][col] = 0;
-                }
-            }
+            const botDifficulty = Object.values(bots).find(b => b.id === this.currentPlayer)?.difficulty || 'X';
+            // console.log(`makeBotMove: использует сложность - ${botDifficulty}`)
 
-            const availableColumns = [];
-            for (let col = 0; col < this.columns; col++) {
-                if (this.getLowestEmptyRow(col) !== -1) {
-                    availableColumns.push(col);
-                }
-            }
+            // ход от бота
+            const move = getBotMove(this, botDifficulty);
 
-            if (availableColumns.length > 0) {
-                const randomCol = availableColumns[Math.floor(Math.random() * availableColumns.length)];
-                const row = this.getLowestEmptyRow(randomCol);
-                this.executeBotMove(row, randomCol);
+            if (move){
+                this.executeBotMove(move.row, move.col);
+            } else {
+                console.error(`Бот не смог определить ход!`);
             }
         }
 
@@ -1022,7 +1011,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.makeBotMove();
                 }, 500);
             } else {
-                console.log("nextPlayer: Ход человека или игра окончена");
+                // console.log("nextPlayer: Ход человека или игра окончена");
             }
         }
 

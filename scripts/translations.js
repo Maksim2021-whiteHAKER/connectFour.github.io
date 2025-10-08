@@ -853,6 +853,21 @@ const translations = {
         "udm": "Шудӥсь",
     },
 
+    "difficultyBotMode": {
+        "ru": "Сложность бота:",
+        "sr": "Тежина бота:",
+        "en": "Bot difficulty:",
+        "es": "Dificultad del bot:",
+        "zh-CN": "AI 玩家",
+        "fr": "Difficulté du bot :",
+        "de": "Bot-Schwierigkeit:",
+        "ja": "ボットの難易度：",
+        "pt-BR": "Dificuldade do bot:",
+        "ar": "صعوبة الروبوت:",
+        "tr": "Bot zorluğu:",
+        "udm": "бот сложность:"
+    },
+
     "1stroke": {
         "ru": "Привет! Меня зовут Владимиров Максим, и я разработчик этой игры '4 в ряд'.",
         "sr": "Здраво! Зовем се Владимиров Максим и ја сам развојач ове игре '4 у низу'.",
