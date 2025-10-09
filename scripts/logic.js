@@ -846,33 +846,44 @@ document.addEventListener('DOMContentLoaded', () => {
             return -1;
         }
 
-        checkWinForBot(row, col, player) {
+        checkWinHypothetical(row, col, player) {
             const directions = [
-                { dr: 0, dc: 1 },
-                { dr: 1, dc: 0 },
-                { dr: 1, dc: 1 },
-                { dr: 1, dc: -1 }
+                { dr: 0, dc: 1 },  // горизонталь ↔
+                { dr: 1, dc: 0 },  // вертикаль ↕ 
+                { dr: 1, dc: 1 },  // диагональ ↘
+                { dr: 1, dc: -1 }  // диагональ ↙
             ];
-
+        
             for (const { dr, dc } of directions) {
-                let count = 1;
+                let count = 1; // сама проверяемая ячейка
+        
+                // Вперёд по направлению
                 let r = row + dr;
                 let c = col + dc;
-                while (r >= 0 && r < this.rows && c >= 0 && c < this.columns && this.board[r][c] === player) {
-                    count++;
-                    r += dr;
-                    c += dc;
+                while (r >= 0 && r < this.rows && c >= 0 && c < this.columns) {
+                    if (this.board[r][c] === player) {
+                        count++;
+                        r += dr;
+                        c += dc;
+                    } else {
+                        break;
+                    }
                 }
+        
+                // Назад по направлению
                 r = row - dr;
                 c = col - dc;
-                while (r >= 0 && r < this.rows && c >= 0 && c < this.columns && this.board[r][c] === player) {
-                    count++;
-                    r -= dr;
-                    c -= dc;
+                while (r >= 0 && r < this.rows && c >= 0 && c < this.columns) {
+                    if (this.board[r][c] === player) {
+                        count++;
+                        r -= dr;
+                        c -= dc;
+                    } else {
+                        break;
+                    }
                 }
-                if (count >= 4) {
-                    return true;
-                }
+        
+                if (count >= 4) return true;
             }
             return false;
         }

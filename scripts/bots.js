@@ -162,40 +162,32 @@ export function botEasyMove(gameInstance) {
 export function botMediumMove(gameInstance) {
     // Логика из вашего текущего makeBotMove, адаптированная
     const currentPlayer = gameInstance.currentPlayer; // ID бота
+    const allActivePlayers = [];
+
+    for (let i = 1; i <= gameInstance.players; i++){
+        allActivePlayers.push(i);
+    }
+
+    Object.values(gameInstance.bots || {}).forEach(bot => {
+            if (bot.isActive) allActivePlayers.push(bot.id); 
+        })
+
+    // Исключаем самого бота
+    const opponents = allActivePlayers.filter(id => id !== gameInstance.currentPlayer);
 
     // 1. Проверим, можем ли мы выиграть на следующем ходу
     for (let col = 0; col < gameInstance.columns; col++) {
         const row = gameInstance.getLowestEmptyRow(col);
-        if (row !== -1) {
-            gameInstance.board[row][col] = currentPlayer;
-            if (gameInstance.checkWinForBot(row, col, currentPlayer)) {
-                gameInstance.board[row][col] = 0;
-                return { row, col }; // Найден выигрышный ход
-            }
-            gameInstance.board[row][col] = 0;
-        }
+        if (row !== -1 && gameInstance.checkWinHypothetical(row, col, currentPlayer)) return { row, col }; // Найден выигрышный ход
     }
+    
 
     // 2. Проверим, может ли выиграть *любой* другой игрок (не бот) на следующем ходу и заблокируем его
     // Найдем ID обычного игрока (не бота)
-    let humanPlayerId = 1; // Предположим, что первый обычный игрок - это 1
-    for (let i = 1; i <= gameInstance.players; i++) {
-        // Проверяем, что игрок i не является ботом
-        if (!Object.values(gameInstance.bots || {}).some(bot => bot.id === i)) {
-            humanPlayerId = i;
-            break;
-        }
-    }
-
-    for (let col = 0; col < gameInstance.columns; col++) {
-        const row = gameInstance.getLowestEmptyRow(col);
-        if (row !== -1) {
-            gameInstance.board[row][col] = humanPlayerId; // Предполагаем ход человека
-            if (gameInstance.checkWinForBot(row, col, humanPlayerId)) { // Проверяем его победу
-                gameInstance.board[row][col] = 0;
-                return { row, col }; // Найден ход для блокировки
-            }
-            gameInstance.board[row][col] = 0;
+    for (const opponentId of opponents){
+        for (let col = 0; col < gameInstance.columns; col++){
+            const row = gameInstance.getLowestEmptyRow(col)
+            if (row !== -1 && gameInstance.checkWinHypothetical(row, col, opponentId)) return {row, col};
         }
     }
 
