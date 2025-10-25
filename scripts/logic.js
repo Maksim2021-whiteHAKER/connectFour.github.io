@@ -767,6 +767,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createBoard() {
             board.innerHTML = '';
+            updateBoardSize()
+      
             board.style.gridTemplateColumns = `repeat(${this.columns}, 1fr)`;
             for (let row = 0; row < this.rows; row++) {
                 for (let col = 0; col < this.columns; col++) {
@@ -1122,6 +1124,84 @@ document.addEventListener('DOMContentLoaded', () => {
             return null;
         }
     }
+
+    function calculateBoardSize() {
+        // Получаем доступный размер экрана
+        const availableWidth = window.innerWidth * 0.95; // 95% ширины экрана
+        const availableHeight = window.innerHeight * 0.7; // 70% высоты экрана (оставляем место для UI)
+    
+        // Рассчитываем максимальный размер ячейки по ширине и высоте
+        // Учитываем зазоры (gap) между ячейками и padding доски
+        const gapSize = 4; // Должно совпадать с gap в CSS .board
+        const boardPadding = 10; // Должно совпадать с padding в CSS .board
+        if (game.columns <= 0 || game.rows <= 0){
+            console.error("calculateBoardSize: неверно кол. строк и колонок:", game.rows, game.columns);
+            return {cellSize: 40, fontSizeForLabels: 16};
+        }
+        const maxCellWidthByColumns = (availableWidth - 2 * boardPadding - (game.columns - 1) * gapSize) / game.columns;
+        const maxCellHeightByRows = (availableHeight - 2 * boardPadding - (game.rows - 1) * gapSize) / game.rows;
+    
+        // Выбираем наименьший размер, чтобы доска помещалась полностью
+        let cellSize = Math.min(maxCellWidthByColumns, maxCellHeightByRows);
+    
+        // Устанавливаем минимальный и максимальный размер ячейки
+        const minCellSize = 15; // px
+        const maxCellSize = 120;  // px
+        cellSize = Math.max(minCellSize, Math.min(cellSize, maxCellSize));
+    
+        console.log(`Рассчитанный размер ячейки: ${cellSize}px`);
+
+        const fontSizeForLabels = Math.max(8, Math.min(Math.floor(cellSize * 0.4), 36))
+        
+        return {cellSize, fontSizeForLabels};
+    }
+
+    function updateBoardSize() {
+        if (!game) return;
+    
+        const cellSize = calculateBoardSize();
+    
+        // Устанавливаем grid-template-columns и grid-template-rows
+        board.style.gridTemplateColumns = `repeat(${game.columns}, ${cellSize}px)`;
+        board.style.gridTemplateRows = `repeat(${game.rows}, ${cellSize}px)`;
+    
+        // Обновляем размеры меток
+        const columnNumberElements = columnNumbers.querySelectorAll('.column-number');
+        const rowLetterElements = rowLetters.querySelectorAll('.row-letter');
+    
+        columnNumberElements.forEach(el => {
+            el.style.width = `${cellSize}px`;
+            el.style.height = 'auto'; // Позволяем высоте подстраиваться под текст
+        });
+    
+        rowLetterElements.forEach(el => {
+            el.style.height = `${cellSize}px`;
+            el.style.width = 'auto'; // Позволяем ширине подстраиваться под текст
+        });
+    
+        // Обновляем размеры ячеек (если необходимо)
+        const cells = board.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            cell.style.fontSize = `${Math.floor(cellSize * 0.6)}px`; // Пример: 60% от размера ячейки
+        });
+    }
+
+    function handleResize() {
+        if (game && typeof game.createBoard === 'function') {
+            console.log("Экран изменен, пересоздаем доску...");
+            // Пересоздаем доску с новыми размерами
+            game.createBoard();
+            // Также обновляем метки, если они зависят от размера
+            game.createColumnNumbers();
+            game.createRowLetters();
+            // Обновляем отображение фишек
+            game.updateBoard();
+        }
+    }
+    
+    // Добавляем обработчик события изменения размера окна
+    window.addEventListener('resize', handleResize);
+
 });
 
 function updateGameLanguage() {
