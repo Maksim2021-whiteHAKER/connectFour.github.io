@@ -1149,11 +1149,6 @@ export function logicSlider(){
         // Инициализируем слайдер
         updateSlider();
 
-        // (Опционально) Скрыть слайдер, если поддерживается только один язык
-        // if (sliderLanguages.length <= 1) {
-        //     sliderContainer.style.display = 'none';
-        // }
-
     }, 150); // Небольшая задержка для уверенности в загрузке DOM
 }
 

@@ -32,6 +32,28 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Перевод применён')
     let originalPlayerColors = ['#ff0000', '#f1c40f', '#1ca9c9', '#00fa91'];
     let playerColors = [...originalPlayerColors];
+    let currentPixelRatio = window.devicePixelRatio;
+    let zoomCheckIntervalId = null;
+
+    function checkForZoom(){
+        if (window.devicePixelRatio !== currentPixelRatio){
+            currentPixelRatio = window.devicePixelRatio;
+            handleResize();
+        }
+    }
+
+    function startZoomCheck(){
+        if (zoomCheckIntervalId !== null){
+            return;
+        }
+        zoomCheckIntervalId = setInterval(checkForZoom, 500);
+    }
+
+    function stopZoomCheck(){
+        if (zoomCheckIntervalId !== null)
+            clearInterval(zoomCheckIntervalId);
+        zoomCheckIntervalId = null;
+    }
 
     // Добавляем параметр playerNumber для определения, какая тема должна быть выбрана
     function populateThemeOptions(containerSelector, playerNumber = null) {
@@ -685,6 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.createRowLetters();
             this.createBoard();
             this.updateStatus();
+            startZoomCheck();
 
             status.textContent = t('status')
 
@@ -1128,7 +1151,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function calculateBoardSize() {
         // Получаем доступный размер экрана
         const availableWidth = window.innerWidth * 0.95; // 95% ширины экрана
-        const availableHeight = window.innerHeight * 0.7; // 70% высоты экрана (оставляем место для UI)
+
+        const headerElement = document.querySelector('h1');
+        const mainmenuElement = document.querySelector('.mein-menu');
+        const statusElement = document.querySelector('.status');
+        const controlsElement = document.querySelector('.controls');
+        const hostingInfoElement = document.querySelector('.hosting-info');
+
+        let totalHeightAboveBoard = 0;
+        if (headerElement) totalHeightAboveBoard += headerElement.offsetHeight;
+        if (mainmenuElement) totalHeightAboveBoard += mainmenuElement.offsetHeight;
+        if (statusElement) totalHeightAboveBoard += statusElement.offsetHeight;
+        if (controlsElement) totalHeightAboveBoard += controlsElement.offsetHeight;
+        if (hostingInfoElement) totalHeightAboveBoard += hostingInfoElement.offsetHeight;
+
+        totalHeightAboveBoard += 40; // Учитываем также верхний и нижний padding body (20px + 20px = 40px)
+
+        const availableHeight = window.innerHeight - totalHeightAboveBoard;
     
         // Рассчитываем максимальный размер ячейки по ширине и высоте
         // Учитываем зазоры (gap) между ячейками и padding доски
@@ -1146,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         // Устанавливаем минимальный и максимальный размер ячейки
         const minCellSize = 15; // px
-        const maxCellSize = 120;  // px
+        const maxCellSize = 70;  // px
         cellSize = Math.max(minCellSize, Math.min(cellSize, maxCellSize));
     
         console.log(`Рассчитанный размер ячейки: ${cellSize}px`);
@@ -1159,7 +1198,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateBoardSize() {
         if (!game) return;
     
-        const cellSize = calculateBoardSize();
+        // --- ИЗМЕНЕНО: Получаем объект с размерами ---
+        const { cellSize, fontSizeForLabels } = calculateBoardSize();
+        // --- КОНЕЦ ИЗМЕНЕНИЯ ---
     
         // Устанавливаем grid-template-columns и grid-template-rows
         board.style.gridTemplateColumns = `repeat(${game.columns}, ${cellSize}px)`;
@@ -1172,11 +1213,17 @@ document.addEventListener('DOMContentLoaded', () => {
         columnNumberElements.forEach(el => {
             el.style.width = `${cellSize}px`;
             el.style.height = 'auto'; // Позволяем высоте подстраиваться под текст
+            // --- НОВОЕ: Устанавливаем font-size ---
+            el.style.fontSize = `${fontSizeForLabels}px`;
+            // --- КОНЕЦ НОВОГО ---
         });
     
         rowLetterElements.forEach(el => {
             el.style.height = `${cellSize}px`;
             el.style.width = 'auto'; // Позволяем ширине подстраиваться под текст
+            // --- НОВОЕ: Устанавливаем font-size ---
+            el.style.fontSize = `${fontSizeForLabels}px`;
+            // --- КОНЕЦ НОВОГО ---
         });
     
         // Обновляем размеры ячеек (если необходимо)
@@ -1201,6 +1248,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Добавляем обработчик события изменения размера окна
     window.addEventListener('resize', handleResize);
+    
+    window.addEventListener('beforeunload', () => {
+        stopZoomCheck();
+    })
 
 });
 
@@ -1267,10 +1318,10 @@ function updateGameLanguage() {
              }
         }
     } else {
-        console.log("  - Игра не запущена, обновление только статических элементов");
+        console.log(" - Игра не запущена, обновление только статических элементов");
     }
 
-    console.log("  - Статические элементы обновлены (предполагается вызов applyTranslations)");
+    console.log(" - Статические элементы обновлены (предполагается вызов applyTranslations)");    
 }
 
 window.updateGameLanguage = updateGameLanguage;

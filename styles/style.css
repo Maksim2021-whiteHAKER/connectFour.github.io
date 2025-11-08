@@ -422,10 +422,7 @@ button:hover {
     display: grid;
     gap: 4px;
     background-color: var(--board);
-    /* padding: 10px; */
-    /* --- ИЗМЕНЕНО: Используем padding побольше для лучшего вида --- */
     padding: 15px; 
-    /* --- КОНЕЦ ИЗМЕНЕНИЙ --- */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     width: fit-content;
@@ -445,7 +442,7 @@ button:hover {
     align-items: center;
     justify-content: center;
     /* font-size управляется JS или clamp() */
-    font-size: clamp(16px, 3vw, 32px);
+    font-size: clamp(9px, 3vw, 25px);
     min-width: 15px;
     min-height: 15px;
     box-sizing: border-box;
@@ -460,7 +457,7 @@ button:hover {
         padding: 3px;
     }
     .cell {
-        font-size: clamp(12px, 3vw, 24px);
+        font-size: clamp(12px, 3vw, 20px);
         min-width: 10px;
         min-height: 10px;
     }
