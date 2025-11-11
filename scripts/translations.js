@@ -1,5 +1,6 @@
 // scripts/translations.js
 
+let version_game = 'lite'; // lite для эмодзи, full - изображения
 // 1. Объект с переводами
 // Ключи - это id элементов или произвольные ключи для динамического текста
 // Значения - объекты с кодами языков и соответствующими переводами
@@ -977,6 +978,8 @@ function applyTranslations() {
 export function updateVersionDisplay(){
     const ver = document.getElementById('ver')
     const versionSpan = document.getElementById('versionSpan')
+    versionSpan.style.color = '#f03232';
+    versionSpan.style.marginTop = '5px';
     if (ver && versionSpan){
         const verText = ver.textContent.trim();
         if (verText){
@@ -1033,43 +1036,76 @@ export const sliderLanguages = [
 // Простые SVG-флаги в формате Base64 для примера
 // В реальном проекте лучше использовать файлы в папке assets
 
-export const flagImages = {
-    'ru': '/assets/flags/svg/myhomeland.svg',
-    'sr': '/assets/flags/svg/brotherSerb.svg',
-    'en': '/assets/flags/svg/Flag-of-USAXPENP.svg',
-    'es': '/assets/flags/svg/Flag-of-Spain.svg',
-    'zh-CN': '/assets/flags/svg/Flag-of-China.svg',
-    'fr': '/assets/flags/svg/Flag-of-France.svg',
-    'de': '/assets/flags/svg/Flag-of-Germany.svg',
-    'ja': '/assets/flags/svg/Flag-of-japan.svg',
-    'pt-BR': '/assets/flags/svg/Flag-of-Brazil.svg',
-    'ar': '/assets/flags/svg/Flag-of-Saudi_Arabia.svg',
-    'tr': '/assets/flags/svg/Flag-of-Turkiye.svg',
-    'udm': '/assets/flags/svg/mylittlehomeland.svg',
-};
+// зависят от version_game, пусты
+let flagImages = {};
+let flagEmoji = {};
+let flagNames = {};
 
-const flagEmoji = {
-    'ru': "♾",
-    'sr': "😇",
-    'en': "⚠",
-    'es': "🌴",
-    'zh-CN': "🟥🛠",
-    'fr': "🥖",
-    'de': "🛠",
-    'ja': "🍣",
-    'pt-BR': "☀",
-    'ar': "⛱",
-    'tr': "☪",
-    'udm': '🌲🌸'   
+const emoji = [
+    {lang: 'Россия', name: 'ru', symbol: '♾'},
+    {lang: 'Србија', name: 'sr', symbol: '😇'},
+    {lang: 'USA', name: 'en', symbol: '⚠'},
+    {lang: 'España', name: 'es', symbol: '🌴'},
+    {lang: '中国', name: 'zh-CN', symbol: '🟥🛠'},
+    {lang: 'France', name: 'fr', symbol: '🥖'},
+    {lang: 'Deutschland', name: 'de', symbol: '🛠'},
+    {lang: '日本', name: 'ja', symbol: '🍣'},
+    {lang: 'Brasil', name: 'pt-BR', symbol: '☀'},
+    {lang: 'المملكة العربية السعودية', name: 'ar', symbol: '⛱'},
+    {lang: 'Türkiye', name: 'tr', symbol: '☪'},
+    {lang: 'Удмуртия', name: 'udm', symbol: '🌲🌸'},
+]
+
+function initializeFlags(){
+    if (version_game === 'full'){
+        flagImages = {
+            'ru': '/assets/flags/svg/myhomeland.svg',
+            'sr': '/assets/flags/svg/brotherSerb.svg',
+            'en': '/assets/flags/svg/Flag-of-USAXPENP.svg',
+            'es': '/assets/flags/svg/Flag-of-Spain.svg',
+            'zh-CN': '/assets/flags/svg/Flag-of-China.svg',
+            'fr': '/assets/flags/svg/Flag-of-France.svg',
+            'de': '/assets/flags/svg/Flag-of-Germany.svg',
+            'ja': '/assets/flags/svg/Flag-of-japan.svg',
+            'pt-BR': '/assets/flags/svg/Flag-of-Brazil.svg',
+            'ar': '/assets/flags/svg/Flag-of-Saudi_Arabia.svg',
+            'tr': '/assets/flags/svg/Flag-of-Turkiye.svg',
+            'udm': '/assets/flags/svg/mylittlehomeland.svg',
+        };
+        emoji.forEach(item => {
+            flagEmoji[item.name] = item.symbol;
+            flagNames[item.name] = item.lang;
+        });
+        
+
+    } else {
+        flagImages = {};
+        emoji.forEach(item => {
+            flagEmoji[item.name] = item.symbol;
+            flagNames[item.name] = item.lang;
+        });
+    }
 }
+
+export function getFlagImages(){
+    return flagImages;
+}
+
+export function getflagEmoji(){
+    return flagEmoji;
+}
+
+initializeFlags();
 
 export function logicSlider(){
     setTimeout(() => {
+        console.log(flagNames)
         const sliderContainer = document.getElementById('languageSliderContainer');
         const sliderFlagsContainer = document.getElementById('sliderFlags');
         const sliderPrevBtn = document.getElementById('sliderPrev');
         const sliderNextBtn = document.getElementById('sliderNext');
         const currentLang = window.currentLanguage || 'ru'; // Получаем текущий язык
+        const typeVersion = document.getElementById('typeVersion');
 
         if (!sliderContainer || !sliderFlagsContainer || !sliderPrevBtn || !sliderNextBtn) {
             console.warn('Элементы слайдера языка не найдены в DOM.');
@@ -1099,28 +1135,62 @@ export function logicSlider(){
                 flagBtn.setAttribute('data-lang', langData.code);
                 flagBtn.setAttribute('title', langData.name); // Всплывающая подсказка
 
-                const flagImg = document.createElement('img');
-                flagImg.className = 'lang-flag-img';
-                flagImg.src = flagImages[langData.code] || ''; // Заглушка
-                               
-                flagImg.alt = langData.code.toUpperCase();
-                
-                flagImg.onerror = function(){
-                    console.log(`[${langData.code}] Эмодзи fallback triggered`);
-                    this.style.display = 'none';
+                const flagContent = document.createElement('div');
+                flagContent.style.display = 'flex';
+                flagContent.style.flexDirection = 'column'; // Элементы будут в столбик
+                flagContent.style.alignItems = 'center'; // Центрируем по горизонтали
+                flagContent.style.justifyContent = 'center'; // Центрируем по вертикали
+                flagContent.style.gap = '0.5px'; // Отступ между флагом и названием
 
-                    const flagContainer = this.parentElement;
-                    const emojiSpan = document.createElement('span');
-                    emojiSpan.className = 'lang-flag-emoji';
-                    if (flagEmoji[langData.code]){
-                        emojiSpan.textContent = flagEmoji[langData.code]
-                    } else {
-                        emojiSpan.textContent = langData.code.toUpperCase()
+                let flagElement;
+                if (version_game === 'full' & flagImages[langData.code]){  
+
+                    const flagImg = document.createElement('img');
+                    typeVersion.textContent = 'Full';
+                    flagImg.className = 'lang-flag-img';
+                    flagImg.src = flagImages[langData.code];
+                                
+                    flagImg.alt = langData.name || langData.code.toUpperCase();
+                    
+                    flagImg.onerror = function(){
+                        console.log(`[${langData.code}] Эмодзи fallback triggered`);
+                        this.style.display = 'none';
+                        // const flagContainer = this.parentElement;
+                        const emojiSpan = document.createElement('span');
+                        emojiSpan.className = 'lang-flag-emoji';
+                        emojiSpan.textContent = flagEmoji[langData.code] || langData.code.toUpperCase();
+                        flagBtn.appendChild(emojiSpan);
                     }
-                    flagContainer.appendChild(emojiSpan);
+
+                    flagElement = flagImg;
+                } else {
+                    const emojiSpan = document.createElement('span');
+                    typeVersion.textContent = 'Lite';
+                    emojiSpan.className = 'lang-flag-emoji';
+                    emojiSpan.textContent = flagEmoji[langData.code] || langData.code.toUpperCase();
+                    flagElement = emojiSpan;
                 }
 
-                flagBtn.appendChild(flagImg);
+                flagContent.appendChild(flagElement);
+
+                // Создаем элемент для названия языка
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'lang-flag-name';
+                nameDiv.textContent = flagNames[langData.code] || langData.name; // Используем название страны или имя языка
+                nameDiv.style.fontSize = '15px'; // Размер шрифта для названия
+                nameDiv.style.textAlign = 'center'; // Центрируем текст
+                nameDiv.style.overflow = 'hidden';
+                nameDiv.style.textOverflow = 'ellipsis';
+                nameDiv.style.whiteSpace = 'nowrap';
+                nameDiv.title = flagNames[langData.code] || langData.name; // Всплывающая подсказка для длинных названий
+            
+                // Добавляем название в контейнер (оно будет под флагом/эмодзи)
+                flagContent.appendChild(nameDiv);
+            
+                // Добавляем контейнер в кнопку
+                flagBtn.appendChild(flagContent);
+            
+                // Добавляем кнопку в слайдер
                 sliderFlagsContainer.appendChild(flagBtn);
 
                 // Добавляем обработчик клика
@@ -1152,3 +1222,14 @@ export function logicSlider(){
     }, 150); // Небольшая задержка для уверенности в загрузке DOM
 }
 
+export function setVersion(newVersion){
+    if (version_game === 'lite' || version_game === 'full'){
+        version_game = newVersion;
+        initializeFlags();
+        if (typeof logicSlider === 'function'){
+            logicSlider();
+        }
+    } else {
+        console.warn(`Неизвестная версия: ${newVersion}, введите lite || full`);
+    }
+}

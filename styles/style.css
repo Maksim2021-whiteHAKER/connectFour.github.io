@@ -64,6 +64,21 @@ h4 {
     display: none;
 }
 
+#gameTitle {
+    /* border: 0.5px solid #ccc; */
+    margin-bottom: -15px;
+}
+
+#typeVersion {
+    position: relative;
+    /* border: 0.5px solid yellow; */
+    font-size: clamp(24px, 2vw, 36px);
+    color: lawngreen;
+    text-align: center;
+    -webkit-text-stroke: yellow 0.70px;
+    text-shadow: 0 0 70px red;
+}
+
 .main-menu {
     display: flex;
     flex-direction: column;
@@ -214,6 +229,18 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.lang-flag-name {
+    font-size: 8px; /* Меньший размер шрифта для названия */
+    color: #333; /* Цвет текста */
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 64px; /* Ширина, соответствующая ширине кнопки */
+    padding: 0 2px; /* Небольшой внутренний отступ */
+    box-sizing: border-box;
 }
 
 .lang-flag-btn.hover {

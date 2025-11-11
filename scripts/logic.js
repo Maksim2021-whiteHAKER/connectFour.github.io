@@ -1,5 +1,5 @@
 // scripts/logic.js 
-import { logicSlider, sliderLanguages, flagImages, updateVersionDisplay } from "./translations.js";
+import { logicSlider, sliderLanguages, getFlagImages, updateVersionDisplay } from "./translations.js";
 import { GAME_CONFIG } from './config.js'
 import { getBotMove } from "./bots.js";
 
@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Функция changeLanguage не определена. Слайдер языков не будет работать.');
         return;
     }
-    if (typeof sliderLanguages === 'undefined' || typeof flagImages === 'undefined') {
-        console.warn('Данные sliderLanguages или flagImages не определены. Слайдер языков не будет работать.');
+    if (typeof sliderLanguages === 'undefined' || typeof getFlagImages === 'undefined') {
+        console.warn('Данные sliderLanguages или getFlagImages не определены. Слайдер языков не будет работать.');
         return;
     }
     if (!document.getElementById('languageSliderContainer')) {
