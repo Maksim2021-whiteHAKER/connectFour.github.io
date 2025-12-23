@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     normalModeBtn.addEventListener('click', () => {
         isCreativeMode = false;
         if (isCreativeMode === false){
-            alert(`В разработке...`)
+            alert(`В разработке... (in progress... not work while)`)
             return;
         }
         gameMode = 'single';
