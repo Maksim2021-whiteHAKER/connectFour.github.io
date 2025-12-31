@@ -110,9 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainMenu = document.getElementById('mainMenu');
     const creativeSettings = document.getElementById('creativeSettings');
     const customizationPanel = document.getElementById('customizationPanel');
-    const aboutUsPanel = document.getElementById('aboutUsPanel')
-    const aboutUsBtn = document.getElementById('aboutUsBtn')
-    const backToMainFromAbout = document.getElementById('backToMainFromAbout')
+    const aboutUsPanel = document.getElementById('aboutUsPanel');
+    const aboutUsBtn = document.getElementById('aboutUsBtn');
+    const supportBtn = document.getElementById('supportBtn');
+    const supportBtnPanel = document.getElementById('supportModal');
+    const backToMainFromAbout = document.getElementById('backToMainFromAbout');
     const normalModeBtn = document.getElementById('normalMode');
     const creativeModeBtn = document.getElementById('creativeMode');
     const customizationBtn = document.getElementById('customizationBtn');
@@ -271,9 +273,28 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     });
 
+    function showModal(modal){
+        if (modal){
+            // Скрываем все модалки перед показом новой
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            modal.style.display = 'block';       
+        }
+    }
+    
+    function hideModals() {
+        document.querySelectorAll(['.modalsupport']).forEach(m => m.style.display = 'none');
+    }
+
+    // Общий обработчик закрытия для всех модалок
+    document.querySelectorAll('.close-btn').forEach(btn => {
+        btn.addEventListener('click', hideModals);
+    });
+
     aboutUsBtn.addEventListener('click', () => {
         aboutUsPanel.style.display = 'flex';
     })
+
+    document.getElementById('supportBtn').addEventListener('click', () => showModal(supportModal));
 
     startCreativeBtn.addEventListener('click', () => {
         const rows = parseInt(document.getElementById('rows').value);

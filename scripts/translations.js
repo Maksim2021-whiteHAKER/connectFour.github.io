@@ -910,7 +910,138 @@ const translations = {
         "ar": "إذا كانت لديك أي أسئلة أو اقتراحات، يمكنك الاتصال بي:",
         "tr": "Herhangi bir sorunuz veya öneriniz varsa, benimle iletişime geçebilirsiniz:",
         "udm": "Юанъёсты яке ӵектонъёсты вань ке, монэн герӟаськыны быгатӥськоды:"
-    }
+    },
+    "supportBtn": {
+        "ru": "Поддержать автора",
+        "sr": "Подржи аутора",
+        "en": "Support the author", // Или "Donate to the author"
+        "es": "Apoyar al autor",
+        "zh-CN": "支持作者",
+        "fr": "Soutenir l'auteur",
+        "de": "Den Autor unterstützen",
+        "ja": "作者を支援する",
+        "pt-BR": "Apoiar o autor",
+        "ar": "ادعم المؤلف",
+        "tr": "Yazarı destekle"
+    },
+    "supportId": {
+        "ru": "ПОДДЕРЖКА АВТОРА",
+        "sr": "ПОДРШКА АУТОРА",
+        "en": "SUPPORT AUTHOR",
+        "es": "SOPORTE AL AUTOR",
+        "zh-CN": "支持作者",
+        "fr": "SOUTIEN À L'AUTEUR",
+        "de": "AUTOR UNTERSTÜTZEN",
+        "ja": "著者をサポート",
+        "pt-BR": "APOIO AO AUTOR",
+        "ar": "دعم المؤلف",
+        "tr": "YAZARI DESTEKLE"
+    },
+    "supportHowHelp": {
+        "ru": "Как вы можете поддержать проект:",
+        "sr": "Како можете подржати пројекат:",
+        "en": "How you can support the project:",
+        "es": "Cómo puedes apoyar el proyecto:",
+        "zh-CN": "您如何支持项目：",
+        "fr": "Comment vous pouvez soutenir le projet :",
+        "de": "Wie Sie das Projekt unterstützen können:",
+        "ja": "プロジェクトをサポートする方法：",
+        "pt-BR": "Como você pode apoiar o projeto:",
+        "ar": "كيف يمكنك دعم المشروع:",
+        "tr": "Projeyi nasıl destekleyebilirsiniz:"
+    },
+    "tellUs": {
+        "ru": "Рассказать друзьям о приложении! 🗣️",
+        "sr": "Реците пријатељима за апликацију! 🗣️",
+        "en": "Tell friends about the app! 🗣️",
+        "es": "¡Cuéntale a tus amigos sobre la aplicación! 🗣️",
+        "zh-CN": "告诉朋友这个应用！ 🗣️",
+        "fr": "Parlez-en à vos amis ! 🗣️",
+        "de": "Erzähle Freunden von der App! 🗣️",
+        "ja": "アプリについて友達に話してください！ 🗣️",
+        "pt-BR": "Conte aos amigos sobre o app! 🗣️",
+        "ar": "أخبر الأصدقاء عن التطبيق! 🗣️",
+        "tr": "Arkadaşlarınıza uygulamadan bahsedin! 🗣️"
+    },
+    "thanksForSupport": {
+        "ru": "Спасибо за использование приложения! Любая поддержка мотивирует на развитие проекта дальше.",
+        "sr": "Хвала вам што користите апликацију! Свака подршка мотивише даљи развој пројекта.",
+        "en": "Thank you for using the app! Any support motivates further development.",
+        "es": "¡Gracias por usar la aplicación! Cualquier apoyo motiva el desarrollo futuro.",
+        "zh-CN": "感谢您使用此应用程序！任何支持都会激励我继续开发。",
+        "fr": "Merci d'utiliser l'application ! Tout soutien motive le développement futur.",
+        "de": "Vielen Dank, dass Sie die App verwenden! Jede Unterstützung motiviert zur Weiterentwicklung.",
+        "ja": "アプリをご利用いただきありがとうございます！ご支援は今後の開発の励みになります。",
+        "pt-BR": "Obrigado por usar o app! Qualquer apoio motiva o desenvolvimento futuro.",
+        "ar": "شكرًا لاستخدامك التطبيق! أي دعم يشجع على تطوير المشروع في المستقبل.",
+        "tr": "Uygulamayı kullandığınız için teşekkür ederiz! Herhangi bir destek, gelecekteki gelişimi motive eder."
+    },
+    // --- Комплексные переводы с HTML ---
+    "putStar": {
+        "ru": "Поставить звезду на <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> ⭐",
+        "sr": "Дајте звездицу на <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> ⭐",
+        "en": "Star on <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> ⭐",
+        "es": "Dar una estrella en <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> ⭐",
+        "zh-CN": "在 <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> 上点赞 ⭐",
+        "fr": "Donnez une étoile sur <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> ⭐",
+        "de": "Stern auf <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> geben ⭐",
+        "ja": "<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> でスターをつける ⭐",
+        "pt-BR": "Dê uma estrela no <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> ⭐",
+        "ar": "ضع نجمة على <a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a> ⭐",
+        "tr": "<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io' target='_blank' style='color: #00aaff;'>GitHub</a>'da yıldız ver ⭐"
+    },
+    "financialHelpWallet": {
+        "ru": "Финансовая поддержка через кошелёк (wallet) <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "sr": "Финансијска подршка преко новчаника (wallet) <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "en": "Financial support via wallet <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "es": "Apoyo financiero a través de la billetera <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "zh-CN": "通过钱包提供财务支持 <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "fr": "Soutien financier via le portefeuille <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "de": "Finanzielle Unterstützung über Wallet <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "ja": "ウォレット経由の金銭的支援 <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "pt-BR": "Apoio financeiro via carteira <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "ar": "الدعم المالي عبر المحفظة <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰",
+        "tr": "Cüzdan aracılığıyla maddi destek <a href='https://yoomoney.ru/to/410015336126322' target='_blank' rel='noopener noreferrer' style='color: #00aaff;'>YooMoney</a> 💰"
+    },
+    "financialHelpBoosty": {
+        "ru": "Финансовая поддержка: <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "sr": "Финансијска подршка: <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "en": "Financial support: <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "es": "Apoyo financiero: <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "zh-CN": "财务支持： <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "fr": "Soutien financier : <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "de": "Finanzielle Unterstützung: <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "ja": "金銭的支援： <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "pt-BR": "Apoio financeiro: <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "ar": "الدعم المالي: <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰",
+        "tr": "Maddi destek: <a href='https://boosty.to/ghostwarriorxz/donate' target='_blank' style='color: #00aaff;'>Boosty</a> 💰"
+    },
+    "financialHelpDonationAlerts": {
+        "ru": "Финансовая поддержка (иностранные пользователи) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "sr": "Финансијска подршка (корисници из других земаља) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "en": "Financial support (foreign users) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "es": "Apoyo financiero (usuarios extranjeros) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "zh-CN": "财务支持（外国用户） <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "fr": "Soutien financier (utilisateurs étrangers) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "de": "Finanzielle Unterstützung (ausländische Benutzer) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "ja": "金銭的支援（海外ユーザー） <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "pt-BR": "Apoio financeiro (usuários estrangeiros) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "ar": "الدعم المالي (للمستخدمين الأجانب) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰",
+        "tr": "Maddi destek (yabancı kullanıcılar için) <a href='https://www.donationalerts.com/r/ghostwarriorxz' target='_blank' style='color: #FF0FA0;'>donationalerts</a> 💰"
+    },
+    "reportError": {
+        "ru": "Сообщить об ошибках или предложить идеи (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>Issues на GitHub</a>)",
+        "sr": "Пријавите грешке или предложите идеје (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>Issues на GitHub</a>)",
+        "en": "Report errors or suggest ideas (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>Issues on GitHub</a>)",
+        "es": "Reportar errores o sugerir ideas (<a href='https://github.com/Maksim2021-whiteHAKER/Cubik_rubika/issues' target='_blank' style='color: #00aaff;'>Issues en GitHub</a>)",
+        "zh-CN": "报告错误或提出建议 (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>GitHub 上的 Issues</a>)",
+        "fr": "Signaler des erreurs ou suggérer des idées (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>Issues sur GitHub</a>)",
+        "de": "Fehler melden oder Ideen vorschlagen (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>Issues auf GitHub</a>)",
+        "ja": "エラーを報告するか、アイデアを提案してください (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>GitHub 上の Issues</a>)",
+        "pt-BR": "Relatar erros ou sugerir ideias (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>Issues no GitHub</a>)",
+        "ar": "الإبلاغ عن الأخطاء أو اقتراح الأفكار (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>Issues على GitHub</a>)",
+        "tr": "Hataları bildirin veya fikir önerin (<a href='https://github.com/Maksim2021-whiteHAKER/connectFour.github.io/issues' target='_blank' style='color: #00aaff;'>GitHub'daki Issues</a>)"
+    },
 };
 
 // 2. Функция для определения языка пользователя
@@ -926,7 +1057,6 @@ function getUserLanguage() {
 // 3. Глобальная переменная для хранения текущего языка
 let currentLanguage = getUserLanguage();
 
-// 4. Функция для получения перевода по ключу
 function t(key, params = {}) {
     const translationObj = translations[key];
     if (!translationObj) {
@@ -942,7 +1072,6 @@ function t(key, params = {}) {
     }
 
     // Заменяем плейсхолдеры {{paramName}} на значения из params
-    // Например, t('playerName', { number: 1 }) -> "Игрок 1"
     for (const [paramKey, paramValue] of Object.entries(params)) {
         const placeholder = `{{${paramKey}}}`;
         translatedText = translatedText.replace(new RegExp(placeholder, 'g'), paramValue);
@@ -951,23 +1080,33 @@ function t(key, params = {}) {
     return translatedText;
 }
 
-// 5. Функция для применения переводов ко всем элементам с id, совпадающим с ключами
+// 5. УЛУЧШЕННАЯ Функция для применения переводов
 function applyTranslations() {
     for (const key in translations) {
         if (translations.hasOwnProperty(key)) {
             const element = document.getElementById(key);
             if (element) {
-                // Проверяем тип элемента для корректной установки текста
-                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    if (element.hasAttribute('placeholder')) {
-                        element.placeholder = t(key);
-                    } else {
-                        element.value = t(key);
-                    }
-                } else if (element.tagName === 'IMG') {
-                    element.alt = t(key);
+                // Получаем перевод
+                const translatedText = t(key);
+
+                // Проверяем, содержит ли перевод HTML-теги (например, <a>)
+                // Простая проверка: наличие '<' и '>'
+                if (translatedText.includes('<') && translatedText.includes('>')) {
+                    // Если содержит HTML, используем innerHTML
+                    element.innerHTML = translatedText;
                 } else {
-                    element.textContent = t(key);
+                    // Если простой текст, используем textContent
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        if (element.hasAttribute('placeholder')) {
+                            element.placeholder = translatedText;
+                        } else {
+                            element.value = translatedText;
+                        }
+                    } else if (element.tagName === 'IMG') {
+                        element.alt = translatedText;
+                    } else {
+                        element.textContent = translatedText;
+                    }
                 }
             }
         }
